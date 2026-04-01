@@ -1,0 +1,39 @@
+import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import useAuth from '../../hooks/useAuth'
+
+export default function Dashboard() {
+  const {setAuth} = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+
+  async function logout(){
+    try {
+     await axiosPrivate.get('/api/auth/logout', {withCredentials: true})
+      localStorage.removeItem("user");
+      setAuth({});
+      navigate('/login', {replace: true})
+
+    } catch (error) {
+      console.log(error.response.data)
+      localStorage.removeItem("user");
+      document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      setAuth({});
+      navigate('/login', {replace: true})
+    }
+  }
+  
+  return (
+    <div>
+        <h1>Dashboard</h1>
+        <p>Welcome to your dashboard</p>
+        <Link to='/'><button>Home</button></Link>
+        <br />
+        <Link to="/users"><button>Users</button></Link>
+        <br />
+        <br />
+        <button onClick={() => logout()}>Logout</button>
+    </div>
+  )
+}
