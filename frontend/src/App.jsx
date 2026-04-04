@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import {ErrorBoundary} from "react-error-boundary";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 const Home = lazy(() => import("./pages/public/Home"));
 const Login = lazy(() => import("./pages/public/Login"));
@@ -43,11 +44,6 @@ const router = createBrowserRouter([
           path: "users",
           element: <Users />,
         },
-        // {
-        //   path: "users/create",
-        //   element: <CreateUser />,
-        // },
-
         {
           element: <Authorize allowedRoles={["administrator"]} />,
           children: [
@@ -67,6 +63,7 @@ function App() {
 
   return (
     <>
+    <ErrorBoundary fallback={<div>Something went wrong</div>}>
     <AuthProvider>
     <Suspense fallback={<div>Loading...</div>}>
       <AuthInitializer>
@@ -74,6 +71,7 @@ function App() {
       </AuthInitializer>
     </Suspense>
     </AuthProvider>
+    </ErrorBoundary>;
     </>
   )
 }

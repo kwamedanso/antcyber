@@ -5,16 +5,15 @@ const Authorize = ({ allowedRoles }) => {
   const { auth } = useAuth();
   const location = useLocation();
 
+  const from = location.state?.from?.pathname || "/admin/dashboard";
+
   if (!auth?.accessToken) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  const userRole = JSON.parse(localStorage.getItem("user")).role;
-  console.log(userRole);
-
-  if (!allowedRoles.includes(userRole)) {
+  if (!allowedRoles.includes(auth?.user?.role)) {
     // Redirect to a "Unauthorized" page or back to dashboard
-    return <Navigate to="/admin/dashboard" replace />;
+    return <Navigate to={from} replace />;
   }
 
   return <Outlet />;

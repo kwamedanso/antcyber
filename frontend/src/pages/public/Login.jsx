@@ -37,7 +37,7 @@ async function handleLogin(e) {
   localStorage.setItem("user", JSON.stringify(responseData.user))
 
   // Successful login flow
-  setAuth({ accessToken: responseData.accessToken });
+  setAuth({ accessToken: responseData.accessToken, user: responseData.user });
 
     navigate(from);
   } catch (error) {

@@ -10,9 +10,7 @@ const AuthInitializer = ({ children }) => {
         const initializeAuth = async () => {
             try {
                 // Try to get a new access token using the refresh token cookie
-                const newAccessToken = await refresh();
-
-                setAuth({ accessToken: newAccessToken });
+                await refresh();
             } catch (error) {
                 // Refresh failed - user needs to login
                 console.log("Refresh token expired or invalid");

@@ -2,15 +2,13 @@ import { axiosPrivate } from '../api/axios';
 import useAuth from './useAuth';
 
 const useRefreshToken = () => {
-    const { setAuth } = useAuth();
+    const {setAuth } = useAuth();
 
     const refresh = async () => {
         const response = await axiosPrivate.get('/api/auth/refresh', {
             withCredentials: true
         });
-        setAuth(prev => {
-            return { ...prev, accessToken: response.data.accessToken }
-        });
+        setAuth({ accessToken: response.data.accessToken, user: response.data.user });
         return response.data.accessToken;
     }
     return refresh;

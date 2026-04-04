@@ -110,6 +110,52 @@ Ensure PostgreSQL is running on your machine.
     └── vite.config.js       # Vite proxy settings
 ```
 
+## 📖 Frontend Developer API Reference
+
+This template is built on a highly modular, decoupled architecture. Below is a guide to the core hooks and components you will use to build out the frontend.
+
+### 🌐 API Context & Tokens
+- **`axios.js`**: Defines the Axios instances. Contains the standard `axios` for public requests (like login/register), and an `axiosPrivate` instance built specifically with `withCredentials: true` to ensure HTTP-Only refresh cookies are sent to the backend.
+- **`useAxiosPrivate.js`**: This is the engine of the Auth flow. It acts as an interceptor hook. It automatically attaches the active `accessToken` to all outbound requests. If a request responds with `401 Unauthorized`, it automatically queues the failed requests, triggers a silent token refresh, and seamlessly retries the requests.
+- **`useRefreshToken.js`**: Hits the `/api/auth/refresh` backend endpoint to use the HTTP-Only cookie to retrieve a new short-lived access token, updating the global context automatically.
+- **`usePrivateQuery.js`**: A custom wrapper around Tanstack's `useQuery`. It natively integrates `useAxiosPrivate` inside the query so that your server data fetching mechanisms natively support automatic token rotation and caching.
+
+### 🔐 Auth Context & Initialization
+- **`AuthProvider.jsx`**: The React Context Provider that wraps the entire application tree, storing the globally accessible session state (e.g., `accessToken` and the `user` object payload).
+- **`useAuth.js`**: A lightweight hook that consumes the `AuthProvider`, allowing any component to easily grab the user's role or access token via `const { auth, setAuth } = useAuth();`.
+- **`AuthInitializer.jsx`**: Wrapped just outside the Router. the moment a user hard-refreshes the page, this component fires first. It attempts a silent `useRefreshToken()` call to check if a valid session cookie exists and silently restores the `auth` state, preventing a "flash of unauthenticated content" before rendering the app.
+
+### 🛣️ Routing & Role-Based Access Control (RBAC)
+
+The `createBrowserRouter` configuration inside **`App.jsx`** organizes security logically by utilizing Layout Wrappers:
+
+- **`ProtectedRoutes.jsx`**: A React Router `<Outlet />` wrapper. It checks if `auth?.accessToken` exists. If the user isn't logged in, they are forcibly redirected to `/login`, while preserving their originally intended destination in strict state.
+- **`Authorize.jsx`**: The role-based restriction wrapper. It takes an array prop (`allowedRoles={[...]} `). It checks `auth.user.role` against the array. If the user is logged in but doesn't map to an authorized role, it redirects them out of the unauthorized area.
+
+*Example usage in `App.jsx`:*
+```jsx
+{
+  element: <ProtectedRoutes />, // Blocks unauthenticated users
+  children: [
+    {
+      element: <Authorize allowedRoles={["administrator"]} />, // Blocks non-admins
+      children: [
+        { path: "users/create", element: <CreateUser /> },
+      ],
+    }
+  ],
+}
+```
+
+- **`DashboardLayout.jsx`**: A role-aware UI Layout component. It dynamically reads your context and filters rendering elements based on roles. For example, the Sidebar configuration automatically filters out navigation links that the logged-in user isn't authorized to visit:
+```jsx
+const navItems = [
+  { path: "/admin/dashboard", label: "Dashboard", roles: ["administrator", "staff"] },
+  { path: "/admin/users", label: "Users", roles: ["administrator"] },
+];
+// Automatically filters out the "Users" button if a "staff" member logs in
+```
+
 ---
 
 ## Next Steps
