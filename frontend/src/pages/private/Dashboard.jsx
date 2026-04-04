@@ -30,7 +30,7 @@ export default function Dashboard() {
         <p>Welcome to your dashboard</p>
         <Link to='/'><button>Home</button></Link>
         <br />
-        <Link to="/users"><button>Users</button></Link>
+        <Link to="/admin/users"><button>Users</button></Link>
         <br />
         <br />
         <button onClick={() => logout()}>Logout</button>

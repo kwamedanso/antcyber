@@ -8,8 +8,12 @@ import {AuthProvider} from "./utils/AuthProvider";
 import AuthInitializer from "./utils/AuthInitializer";
 const Dashboard = lazy(() => import("./pages/private/Dashboard"));
 const Users = lazy(() => import("./pages/private/Users"));
+const DashboardLayout = lazy(() => import("./pages/private/DashboardLayout"));
+const CreateUser = lazy(() => import("./pages/private/CreateUser"));
+import Authorize from "./utils/Authorize";
 
 const router = createBrowserRouter([
+  //public routes
   {
     path: "/",
     element: <Home />,
@@ -23,17 +27,38 @@ const router = createBrowserRouter([
     element: <Register />,
   },
 
+  //protected routes
   {
     element: <ProtectedRoutes />,
+    path: "/admin",
     children: [
-      {
-        path: "/dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "/users",
-        element: <Users />,
-      },
+     {
+      element: <DashboardLayout />,
+      children: [
+        {
+          path: "dashboard",
+          element: <Dashboard />,
+        },
+        {
+          path: "users",
+          element: <Users />,
+        },
+        // {
+        //   path: "users/create",
+        //   element: <CreateUser />,
+        // },
+
+        {
+          element: <Authorize allowedRoles={["administrator"]} />,
+          children: [
+            {
+              path: "users/create",
+              element: <CreateUser />,
+            },
+          ],
+        },
+      ],
+    }
     ],
   },
 ]);

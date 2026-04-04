@@ -24,7 +24,7 @@ async function checkServer() {
         <Link to="/login"><button>Login</button></Link>
         <Link to="/register"><button>Register</button></Link>
         <br />
-        <Link to="/dashboard"><button>Dashboard</button></Link>
+        <Link to="/admin/dashboard"><button>Dashboard</button></Link>
     </div>
   )
 }

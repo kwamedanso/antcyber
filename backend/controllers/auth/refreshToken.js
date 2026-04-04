@@ -26,7 +26,7 @@ async function refreshToken(req, res, next) {
             return res.status(403).clearCookie('jwt', {
                 httpOnly: true,
                 secure: true,
-                sameSite: 'strict',
+                sameSite: 'None',
                 path: '/'
             }).json({
                 success: false,
@@ -39,7 +39,7 @@ async function refreshToken(req, res, next) {
             return res.status(403).clearCookie('jwt', {
                 httpOnly: true,
                 secure: true,
-                sameSite: 'strict',
+                sameSite: 'None',
                 path: '/'
             }).json({
                 success: false,
@@ -124,7 +124,7 @@ async function refreshToken(req, res, next) {
             return res.status(403).clearCookie('jwt', {
                 httpOnly: true,
                 secure: true,
-                sameSite: 'strict',
+                sameSite: 'None',
                 path: '/'
             }).json({
                 success: false,

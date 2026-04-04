@@ -10,7 +10,7 @@ const app = express();
 // Use cors middleware
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow requests from your client's origin
+    origin: ['http://localhost:5173', 'http://[192.168.100.97:5173'], // Allow requests from your client's origin
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true

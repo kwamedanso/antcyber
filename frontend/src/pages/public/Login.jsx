@@ -13,7 +13,7 @@ export default function Login() {
 const {auth, setAuth} = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/admin/dashboard";
 
 useEffect(() => {
 if(auth?.accessToken){
