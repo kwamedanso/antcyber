@@ -7,8 +7,8 @@ export default function Users() {
         <h1>Users Page</h1>
 
         <br />
-        <Link to="/admin/dashboard"><button>Dashboard</button></Link>
-        <Link to="/admin/users/create"><button>Create User</button></Link>
+        <Link to="/admin/dashboard"><button className='border border-gray-300 rounded-md p-2'>Dashboard</button></Link>
+        <Link to="/admin/users/create"><button className='border border-gray-300 rounded-md p-2'>Create User</button></Link>
         <ul>
             <li>User 1</li>
             <li>User 2</li>

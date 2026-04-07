@@ -28,12 +28,12 @@ export default function Dashboard() {
     <div>
         <h1>Dashboard</h1>
         <p>Welcome to your dashboard</p>
-        <Link to='/'><button>Home</button></Link>
+        <Link to='/'><button className='border border-gray-300 rounded-md p-2'>Home</button></Link>
         <br />
-        <Link to="/admin/users"><button>Users</button></Link>
+        <Link to="/admin/users"><button className='border border-gray-300 rounded-md p-2'>Users</button></Link>
         <br />
         <br />
-        <button onClick={() => logout()}>Logout</button>
+        <button className='border border-gray-300 rounded-md p-2' onClick={() => logout()}>Logout</button>
     </div>
   )
 }

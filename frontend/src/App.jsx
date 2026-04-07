@@ -1,20 +1,26 @@
 import { lazy, Suspense } from "react";
 import {ErrorBoundary} from "react-error-boundary";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-const Home = lazy(() => import("./pages/public/Home"));
-const Login = lazy(() => import("./pages/public/Login"));
-const Register = lazy(() => import("./pages/public/Register"));
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import {AuthProvider} from "./utils/AuthProvider";
 import AuthInitializer from "./utils/AuthInitializer";
+import Authorize from "./utils/Authorize";
+const Home = lazy(() => import("./pages/public/Home"));
+const Login = lazy(() => import("./pages/public/Login"));
+const Register = lazy(() => import("./pages/public/Register"));
+const MainLayout = lazy(() => import("./pages/private/MainLayout"));
 const Dashboard = lazy(() => import("./pages/private/Dashboard"));
 const Users = lazy(() => import("./pages/private/Users"));
-const DashboardLayout = lazy(() => import("./pages/private/DashboardLayout"));
 const CreateUser = lazy(() => import("./pages/private/CreateUser"));
-import Authorize from "./utils/Authorize";
+const Settings = lazy(() => import("./pages/private/Settings"));
+const NotFound = lazy(() => import("./pages/public/NotFound"));
 
 const router = createBrowserRouter([
   //public routes
+  {
+    path: "*",
+    element: <NotFound />,
+  },
   {
     path: "/",
     element: <Home />,
@@ -27,14 +33,18 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
+  {
+    path: "/main",
+    element: <MainLayout />,
+  },
 
-  //protected routes
+  //protected routes, only logged in users can access these routes
   {
     element: <ProtectedRoutes />,
     path: "/admin",
     children: [
      {
-      element: <DashboardLayout />,
+      element: <MainLayout />,
       children: [
         {
           path: "dashboard",
@@ -45,6 +55,11 @@ const router = createBrowserRouter([
           element: <Users />,
         },
         {
+          path: "settings",
+          element: <Settings />,
+        },
+        {
+          //only allowed roles can access these routes because it is nested inside Authorize component
           element: <Authorize allowedRoles={["administrator"]} />,
           children: [
             {
@@ -71,7 +86,7 @@ function App() {
       </AuthInitializer>
     </Suspense>
     </AuthProvider>
-    </ErrorBoundary>;
+    </ErrorBoundary>
     </>
   )
 }

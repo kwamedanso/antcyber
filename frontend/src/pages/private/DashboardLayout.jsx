@@ -39,7 +39,6 @@ function Sidebar(){
             {navItems.filter((item) => item.roles.includes(userRole)).map((item) => (
                 <div key={item.label}>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to={item.path}>{item.label}</NavLink>
-               
                 </div>
             ))}
         </div>

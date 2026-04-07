@@ -1,0 +1,205 @@
+/* Header Container */
+.header {
+  height: 4rem;
+  border-bottom: 1px solid #f3f4f6;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .header {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Left Section */
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Toggle Buttons */
+.mobileToggle {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.mobileToggle:hover {
+  background-color: #f3f4f6;
+}
+
+@media (min-width: 1024px) {
+  .mobileToggle {
+    display: none;
+  }
+}
+
+.desktopToggle {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  display: none;
+}
+
+.desktopToggle:hover {
+  background-color: #f3f4f6;
+}
+
+@media (min-width: 1024px) {
+  .desktopToggle {
+    display: block;
+  }
+}
+
+.icon {
+  color: #6b7280;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumbNav {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.breadcrumbHomeLink {
+  color: #9ca3af;
+  transition: color 0.2s;
+}
+
+.breadcrumbHomeLink:hover {
+  color: #4b5563;
+}
+
+.breadcrumbSeparator {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  color: #d1d5db;
+}
+
+.breadcrumbCurrent {
+  color: #111827;
+  text-transform: capitalize;
+}
+
+.breadcrumbInactive {
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+.breadcrumbInactive:hover {
+  color: #111827;
+}
+
+.breadcrumbLink {
+  color: #6b7280;
+  text-transform: capitalize;
+  transition: color 0.2s;
+}
+
+.breadcrumbLink:hover {
+  color: #111827;
+}
+
+.breadcrumbDefaultTitle {
+  margin-left: 0.5rem;
+  color: #111827;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+/* Right Section */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Notification Button */
+.notificationButton {
+  padding: 0.5rem;
+  color: #9ca3af;
+  border-radius: 9999px;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.notificationButton:hover {
+  background-color: #f9fafb;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #f97316;
+  border: 2px solid white;
+  border-radius: 9999px;
+}
+
+/* Divider */
+.divider {
+  height: 2rem;
+  width: 1px;
+  background-color: #f3f4f6;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+/* Profile Section */
+.profileContainer {
+  position: relative;
+}
+
+.profileButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  padding-right: 0.75rem;
+  border-radius: 9999px;
+  transition: all 0.2s;
+}
+
+.profileButton:hover {
+  background-color: #f9fafb;
+}
+
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 1px solid #f3f4f6;
+  object-fit: cover;
+}
+
+.userName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .userName {
+    display: block;
+  }
+}
+
+.chevronIcon {
+  color: #9ca3af;
+}
