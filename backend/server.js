@@ -7,8 +7,9 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const errorHandler = require('./middleware/errorHandler');
 
-
+//routes
 const authRoutes = require('./routes/auth');
+const testRoutes = require('./routes/test');
 const app = express();
 
 // Use cors middleware
@@ -17,7 +18,9 @@ app.use(cors({
     origin: [
         'http://localhost:5173', 
         'http://192.168.100.97:5173', 
-        'http://192.168.100.120:5173'
+        'http://192.168.100.120:5173',
+        'http://192.168.1.191:5173',
+        'http://192.168.1.192:5173'
     ], // Allow requests from your client's origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -41,6 +44,7 @@ const limiter = rateLimit({
 app.use('/api/auth', limiter);
 
 app.use('/api/auth', authRoutes);
+app.use("/users", testRoutes)
 
 
 app.get('/api/health', (req, res) => {

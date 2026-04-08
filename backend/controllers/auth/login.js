@@ -47,13 +47,6 @@ async function login(req, res, next) {
             });
         }
 
-        // if (!user.is_active) {
-        //     return res.status(403).json({  // ← Use 403 for inactive accounts
-        //         success: false,
-        //         message: 'Account is deactivated. Please contact support.'
-        //     });
-        // }
-
         // Check password
         const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
@@ -85,13 +78,6 @@ async function login(req, res, next) {
             { expiresIn: refreshTokenExpiresIn }
         );
 
-        // console.log(accessToken)
-        // console.log(refreshToken)
-        // return res.json({
-        //     success: true,
-        //     accessToken: accessToken,
-        //     refreshToken: refreshToken,
-        // })
 
         const refreshTokenExpiresAt = new Date(Date.now() + refreshTokenMaxAge * 24 * 60 * 60 * 1000);
         // const ipAddress = req.ip || req.connection.remoteAddress;
@@ -112,11 +98,12 @@ async function login(req, res, next) {
         // Clean up old refresh tokens (optional - prevent too many tokens per user)
         await query(refreshTokenQueries.deleteExpiredTokens);
 
+        const isProduction = process.env.NODE_ENV === 'production';
         // Set HTTP-only cookie
         res.cookie('jwt', refreshToken, {
             httpOnly: true,
-            secure: true, // Dynamic security
-            sameSite: 'None', // Consider 'lax' instead of 'None' for better security
+            secure: isProduction,
+            sameSite: isProduction ? 'None' : 'Lax',
             maxAge: refreshTokenMaxAge * 24 * 60 * 60 * 1000
         });
 

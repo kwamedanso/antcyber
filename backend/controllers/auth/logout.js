@@ -22,12 +22,13 @@ async function logout(req, res, next) {
         // Log error but still clear the cookie
         console.error('Error during token deletion:', error);
     } finally {
+        const isProduction = process.env.NODE_ENV === 'production';
         // Always clear the cookie regardless of database operation success
         res.clearCookie('jwt', {
             httpOnly: true,
-            secure: true, // Dynamic based on environment
-            sameSite: 'strict', // Use 'strict' instead of 'None' for better security
-            path: '/' // Ensure cookie is cleared from all paths
+            secure: isProduction, 
+            sameSite: isProduction ? 'None' : 'Lax', 
+            path: '/' 
         });
 
         return res.sendStatus(204);

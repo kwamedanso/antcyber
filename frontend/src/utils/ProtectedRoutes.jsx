@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { Navigate, useLocation } from "react-router-dom";
+import Loader from "../components/loader/Loader";
 
 const ProtectedRoutes = () => {
     const { auth, loading } = useAuth();
@@ -8,7 +9,7 @@ const ProtectedRoutes = () => {
 
     // Wait for the initial auth check to complete
     if (loading) {
-        return <div>Loading...</div>; // Show loading dots
+        return <Loader />;
     }
 
     // If user is not logged in, redirect to login page

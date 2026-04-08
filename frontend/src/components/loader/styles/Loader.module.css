@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.fullScreen {
+  min-height: 100vh;
+}
+
+.parentFill {
+  min-height: 150px;
+  height: 100%;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 15px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 1s infinite linear alternate;
+  /* Add margin to accommodate the 20px box shadows on the sides */
+  margin: 0 25px; 
+}
+
+@keyframes l5 {
+    0%  {box-shadow: 20px 0 #000, -20px 0 #0002;background: #000 }
+    33% {box-shadow: 20px 0 #000, -20px 0 #0002;background: #0002}
+    66% {box-shadow: 20px 0 #0002,-20px 0 #000; background: #0002}
+    100%{box-shadow: 20px 0 #0002,-20px 0 #000; background: #000 }
+}

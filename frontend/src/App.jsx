@@ -14,6 +14,7 @@ const Users = lazy(() => import("./pages/private/Users"));
 const CreateUser = lazy(() => import("./pages/private/CreateUser"));
 const Settings = lazy(() => import("./pages/private/Settings"));
 const NotFound = lazy(() => import("./pages/public/NotFound"));
+const Loader = lazy(() => import("./components/loader/Loader"));
 
 const router = createBrowserRouter([
   //public routes
@@ -80,7 +81,7 @@ function App() {
     <>
     <ErrorBoundary fallback={<div>Something went wrong</div>}>
     <AuthProvider>
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <AuthInitializer>
       <RouterProvider router={router} />
       </AuthInitializer>

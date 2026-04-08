@@ -4,6 +4,7 @@ const { query } = require('../../utils/database/connection');
 const { refreshTokenQueries } = require('../../utils/database/queries');
 
 async function refreshToken(req, res, next) {
+    const isProduction = process.env.NODE_ENV === 'production';
     const cookies = req.cookies;
 
 
@@ -25,8 +26,8 @@ async function refreshToken(req, res, next) {
             await query(refreshTokenQueries.deleteAllTokensByUserId, [decoded.id]);
             return res.status(403).clearCookie('jwt', {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'None',
+                secure: isProduction,
+                sameSite: isProduction ? 'None' : 'Lax',
                 path: '/'
             }).json({
                 success: false,
@@ -38,8 +39,8 @@ async function refreshToken(req, res, next) {
             await query(refreshTokenQueries.deleteAllTokensByUserId, [decoded.id]);
             return res.status(403).clearCookie('jwt', {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'None',
+                secure: isProduction,
+                sameSite: isProduction ? 'None' : 'Lax',
                 path: '/'
             }).json({
                 success: false,
@@ -99,8 +100,8 @@ async function refreshToken(req, res, next) {
             // Set new refresh token cookie
             res.cookie('jwt', newRefreshToken, {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'None', // Consider 'lax' instead of 'None' for better security
+                secure: isProduction,
+                sameSite: isProduction ? 'None' : 'Lax',
                 maxAge: newRefreshTokenExpiryDays * 24 * 60 * 60 * 1000
             });
         }
@@ -123,8 +124,8 @@ async function refreshToken(req, res, next) {
             await query(refreshTokenQueries.deleteToken, [refreshToken]);
             return res.status(403).clearCookie('jwt', {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'None',
+                secure: isProduction,
+                sameSite: isProduction ? 'None' : 'Lax',
                 path: '/'
             }).json({
                 success: false,
