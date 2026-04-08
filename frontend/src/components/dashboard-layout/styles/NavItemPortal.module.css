@@ -1,0 +1,36 @@
+.portalMenu {
+  position: fixed;
+  margin-left: 0.5rem;
+  width: 12rem;
+  background-color: white;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f3f4f6;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
+  z-index: 100;
+}
+
+.portalLabel {
+  padding: 0.25rem 1rem;
+  font-size: 0.625rem;
+  line-height: 0.875rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #9ca3af;
+  border-bottom: 1px solid #f9fafb;
+  margin-bottom: 0.25rem;
+}
+
+.portalNavLink {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.portalNavLink:hover {
+  background-color: #f9fafb;
+}

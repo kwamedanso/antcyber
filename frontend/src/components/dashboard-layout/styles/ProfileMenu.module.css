@@ -1,0 +1,124 @@
+.profileMenu {
+  position: absolute;
+  width: 16rem;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.directionUp {
+  bottom: 100%;
+  margin-bottom: 0.5rem;
+  left: 0;
+}
+
+.directionDown {
+  top: 100%;
+  margin-top: 0.5rem;
+  right: 0;
+}
+
+.userInfo {
+  padding: 1rem;
+  border-bottom: 1px solid #f9fafb;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.userName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.userEmail {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+.menuSection {
+  padding: 0.5rem;
+}
+
+.borderTop {
+  border-top: 1px solid #f9fafb;
+}
+
+.menuButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.menuButton:hover {
+  background-color: #f9fafb;
+}
+
+.upgradeButton {
+  color: #f97316;
+}
+
+.upgradeButton:hover {
+  background-color: #fff7ed;
+}
+
+.updateButton {
+  color: #059669;
+  background-color: #ecfdf5;
+}
+
+.updateButton:hover {
+  background-color: #d1fae5;
+}
+
+.pulseDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: #10b981;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.logoutButton {
+  margin-top: 0.25rem;
+}
+
+.footer {
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.625rem;
+  line-height: 0.875rem;
+  color: #9ca3af;
+}

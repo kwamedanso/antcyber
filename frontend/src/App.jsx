@@ -8,7 +8,7 @@ import Authorize from "./utils/Authorize";
 const Home = lazy(() => import("./pages/public/Home"));
 const Login = lazy(() => import("./pages/public/Login"));
 const Register = lazy(() => import("./pages/public/Register"));
-const MainLayout = lazy(() => import("./pages/private/MainLayout"));
+const MainLayout = lazy(() => import("./components/dashboard-layout/MainLayout"));
 const Dashboard = lazy(() => import("./pages/private/Dashboard"));
 const Users = lazy(() => import("./pages/private/Users"));
 const CreateUser = lazy(() => import("./pages/private/CreateUser"));

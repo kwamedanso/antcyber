@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronRight } from 'react-icons/fi';
 import Tooltip from './Tooltip';
 import NavItemPortal from './NavItemPortal';
+import styles from './styles/NavItem.module.css';
 
 const NavItem = ({ to, icon: Icon, label, shortcut, isCollapsed, children }) => {
   const location = useLocation();
@@ -31,49 +32,49 @@ const NavItem = ({ to, icon: Icon, label, shortcut, isCollapsed, children }) => 
     return (
       <div 
         ref={itemRef}
-        className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all cursor-pointer ${
-          isParentActive ? 'bg-indigo-50 text-indigo-700' : 
-          isHovered || isOpen ? 'bg-gray-100 text-gray-900' : 'text-gray-500'
+        className={`${styles.navItemContent} ${
+          isParentActive ? styles.active : 
+          isHovered || isOpen ? styles.hoveredOrOpen : styles.default
         }`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={(e) => {
-        if (hasChildren) {
-          e.preventDefault();
-          setIsOpen(!isOpen);
-        }
-      }}
-    >
-      <div className="min-w-[20px] text-inherit flex items-center justify-center">
-        <Icon size={18} />
-      </div>
-      
-      {!isCollapsed && (
-        <div className="flex-1 flex items-center justify-between overflow-hidden whitespace-nowrap">
-          <span className="text-sm font-medium text-inherit">{label}</span>
-          {shortcut && <span className="text-[10px] text-gray-400 font-mono bg-gray-50 px-1 rounded border border-gray-200">{shortcut}</span>}
-          {hasChildren && (
-            <motion.div animate={{ rotate: isOpen ? 90 : 0 }}>
-              <FiChevronRight size={14} className="text-gray-400" />
-            </motion.div>
-          )}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={(e) => {
+          if (hasChildren) {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }
+        }}
+      >
+        <div className={styles.iconWrapper}>
+          <Icon size={18} />
         </div>
-      )}
-    </div>
+        
+        {!isCollapsed && (
+          <div className={styles.labelWrapper}>
+            <span className={styles.label}>{label}</span>
+            {shortcut && <span className={styles.shortcut}>{shortcut}</span>}
+            {hasChildren && (
+              <motion.div animate={{ rotate: isOpen ? 90 : 0 }} className={styles.chevronWrapper}>
+                <FiChevronRight size={14} />
+              </motion.div>
+            )}
+          </div>
+        )}
+      </div>
     );
   };
 
   return (
-    <div className="relative mb-1">
+    <div className={styles.navItemContainer}>
       {isCollapsed ? (
         <Tooltip text={label} show={isHovered}>
-          <NavLink to={hasChildren ? '#' : to} className="w-full block">
+          <NavLink to={hasChildren ? '#' : to} className={styles.navLink}>
             {({ isActive }) => renderContent(isActive)}
           </NavLink>
         </Tooltip>
       ) : (
         <>
-          <NavLink to={hasChildren ? '#' : to} className="w-full block">
+          <NavLink to={hasChildren ? '#' : to} className={styles.navLink}>
             {({ isActive }) => renderContent(isActive)}
           </NavLink>
           <AnimatePresence>
@@ -82,13 +83,15 @@ const NavItem = ({ to, icon: Icon, label, shortcut, isCollapsed, children }) => 
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="ml-8 overflow-hidden border-l border-gray-100"
+                className={styles.childrenContainer}
               >
                 {children.map((child, idx) => (
                   <NavLink 
                     key={idx} 
                     to={child.to} 
-                    className={({ isActive }) => `block px-4 py-2 text-sm transition-colors ${isActive ? 'text-indigo-600 font-medium' : 'text-gray-500 hover:text-gray-900'}`}
+                    className={({ isActive }) => 
+                      `${styles.childNavLink} ${isActive ? styles.childNavLinkActive : styles.childNavLinkInactive}`
+                    }
                   >
                     {child.label}
                   </NavLink>

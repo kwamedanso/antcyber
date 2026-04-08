@@ -1,0 +1,101 @@
+.navItemContainer {
+  position: relative;
+  margin-bottom: 0.25rem;
+}
+
+.navLink {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+}
+
+.navItemContent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.default {
+  color: #6b7280;
+}
+
+.hoveredOrOpen {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.active {
+  background-color: #eef2ff;
+  color: #4f46e5;
+}
+
+.iconWrapper {
+  min-width: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.labelWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: inherit;
+}
+
+.shortcut {
+  font-size: 0.625rem;
+  line-height: 0.875rem;
+  color: #9ca3af;
+  font-family: monospace;
+  background-color: #f9fafb;
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  border: 1px solid #e5e7eb;
+}
+
+.chevronWrapper {
+  display: flex;
+  align-items: center;
+  color: #9ca3af;
+}
+
+.childrenContainer {
+  margin-left: 2rem;
+  overflow: hidden;
+  border-left: 1px solid #f3f4f6;
+}
+
+.childNavLink {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: color 0.15s ease;
+  text-decoration: none;
+}
+
+.childNavLinkInactive {
+  color: #6b7280;
+}
+
+.childNavLinkInactive:hover {
+  color: #111827;
+}
+
+.childNavLinkActive {
+  color: #4f46e5;
+  font-weight: 500;
+}

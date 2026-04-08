@@ -1,0 +1,226 @@
+/* Mobile Overlay */
+.mobileOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  z-index: 60;
+}
+
+@media (min-width: 1024px) {
+  .mobileOverlay {
+    display: none;
+  }
+}
+
+/* Sidebar Container */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: white;
+  border-right: 1px solid #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  z-index: 70;
+  transition: all 0.1s linear;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    position: sticky;
+  }
+}
+
+/* Sidebar Header */
+.sidebarHeader {
+  padding: 1rem;
+  position: relative;
+}
+
+.workspaceContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.workspaceTrigger {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.workspaceIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #4f46e5;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
+}
+
+.workspaceInfo {
+  overflow: hidden;
+}
+
+.workspaceName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.workspacePlan {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #9ca3af;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevronIcon {
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+/* Navigation Area */
+.navArea {
+  flex: 1;
+  overflow-y: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Custom scrollbar */
+.navArea::-webkit-scrollbar {
+  width: 4px;
+}
+
+.navArea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.navArea::-webkit-scrollbar-thumb {
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.navArea::-webkit-scrollbar-thumb:hover {
+  background: #e5e7eb;
+}
+
+.navSection {
+  margin-top: 2rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.sectionTitle {
+  font-size: 0.625rem;
+  line-height: 0.875rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #9ca3af;
+  letter-spacing: 0.025em;
+}
+
+.addIcon {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.addIcon:hover {
+  color: #4b5563;
+}
+
+/* Sidebar Footer */
+.sidebarFooter {
+  padding: 1rem;
+  border-top: 1px solid #f9fafb;
+  background-color: white;
+}
+
+.footerNav {
+  margin-bottom: 1rem;
+}
+
+.profileContainer {
+  position: relative;
+}
+
+.profileTrigger {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.profileTrigger:hover {
+  background-color: #f3f4f6;
+}
+
+.profileTriggerCollapsed {
+  justify-content: center;
+}
+
+.profileAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.profileInfo {
+  flex: 1;
+  overflow: hidden;
+}
+
+.profileName {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileEmail {
+  font-size: 0.625rem;
+  line-height: 0.875rem;
+  color: #9ca3af;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileChevron {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}

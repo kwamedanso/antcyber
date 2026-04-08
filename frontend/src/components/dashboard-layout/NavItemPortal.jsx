@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { NavLink } from 'react-router-dom';
+import styles from './styles/NavItemPortal.module.css';
 
 const NavItemPortal = ({ isOpen, onClose, anchorRef, label, children }) => {
   const [rect, setRect] = useState(null);
@@ -24,12 +25,17 @@ const NavItemPortal = ({ isOpen, onClose, anchorRef, label, children }) => {
   return createPortal(
     <div 
       ref={menuRef}
-      className="fixed ml-2 w-48 bg-white shadow-xl border border-gray-100 rounded-lg py-2 z-[100]"
+      className={styles.portalMenu}
       style={{ top: rect.top, left: rect.right }}
     >
-      <p className="px-4 py-1 text-[10px] uppercase font-bold text-gray-400 border-b border-gray-50 mb-1">{label}</p>
+      <p className={styles.portalLabel}>{label}</p>
       {children.map((child, idx) => (
-        <NavLink onClick={onClose} key={idx} to={child.to} className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">
+        <NavLink 
+          onClick={onClose} 
+          key={idx} 
+          to={child.to} 
+          className={styles.portalNavLink}
+        >
           {child.label}
         </NavLink>
       ))}

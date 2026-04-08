@@ -1,0 +1,29 @@
+.tooltipContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.tooltipContent {
+  position: fixed;
+  padding: 0.25rem 0.5rem;
+  background-color: #111827;
+  color: white;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.tooltipArrow {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-0.25rem, -50%);
+  border: 4px solid transparent;
+  border-right-color: #111827;
+}
