@@ -18,7 +18,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
+  height: 100dvh;
   background-color: white;
   border-right: 1px solid #f3f4f6;
   display: flex;
