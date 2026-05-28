@@ -29,7 +29,6 @@ const TeamMember = ({
 }) => {
   const [imageError, setImageError] = useState(false);
 
-  console.log(name, title)
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
