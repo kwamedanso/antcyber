@@ -24,8 +24,6 @@ const About = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, threshold: 0.1 });
 
-  console.log(teamMember)
-
   useEffect(() => {
     if (isInView) {
       controls.start('visible');
