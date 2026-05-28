@@ -1,0 +1,711 @@
+/* WebEngineering.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary-accent: #B8CC85;
+  --text-dark: #1a1a1a;
+  --bg-light: #fdfdfd;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.webEngineering {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 6rem;
+  }
+}
+
+/* Navigation */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  padding: 2rem 1.5rem;
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .nav {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+.navContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navServices {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid #f3f4f6;
+  border-radius: 9999px;
+  text-decoration: none;
+  color: var(--text-dark);
+  transition: box-shadow 0.3s ease;
+}
+
+.navServices:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.navServicesText {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.navHire {
+  pointer-events: auto;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-accent);
+  color: black;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: filter 0.3s ease;
+}
+
+.navHire:hover {
+  filter: brightness(1.05);
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  padding-top: 12rem;
+  padding-bottom: 8rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  overflow: hidden;
+  background-color: white;
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+.heroContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+.heroContent {
+  max-width: 56rem;
+}
+
+.heroTag {
+  color: var(--primary-accent);
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 2rem;
+  line-height: 0.9;
+}
+
+@media (min-width: 768px) {
+  .heroTitle {
+    font-size: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heroTitle {
+    font-size: 6rem;
+  }
+}
+
+.heroTitleLight {
+  font-style: italic;
+  font-weight: 300;
+  color: #9ca3af;
+}
+
+.heroSubtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  max-width: 42rem;
+  line-height: 1.625;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .heroSubtitle {
+    font-size: 1.125rem;
+  }
+}
+
+.techTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 4rem;
+}
+
+.techTag {
+  padding: 0.5rem 1rem;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.techTag:hover {
+  border-color: var(--primary-accent);
+  color: var(--text-dark);
+  transform: translateY(-2px);
+}
+
+.heroDecoration {
+  position: absolute;
+  right: -5rem;
+  top: 10rem;
+  width: 33.333%;
+  height: 600px;
+  background-color: #f9fafb;
+  border-top-left-radius: 10rem;
+  border-bottom-left-radius: 10rem;
+  z-index: 0;
+}
+
+/* Services Section */
+.servicesSection {
+  padding: 6rem 0;
+  background-color: #f9fafb;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .servicesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.serviceCard {
+  cursor: pointer;
+}
+
+.serviceIcon {
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--primary-accent);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.serviceTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.serviceDescription {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+/* Roadmap Section */
+.roadmapSection {
+  padding: 8rem 1.5rem;
+  background-color: white;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .roadmapSection {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+.roadmapContainer {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.roadmapHeader {
+  text-align: center;
+  margin-bottom: 6rem;
+}
+
+.roadmapTag {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--primary-accent);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.roadmapTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  font-style: italic;
+}
+
+@media (min-width: 768px) {
+  .roadmapTitle {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .roadmapTitle {
+    font-size: 3rem;
+  }
+}
+
+.roadmapTimeline {
+  position: relative;
+}
+
+.roadmapLine {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--primary-accent), transparent);
+}
+
+@media (min-width: 768px) {
+  .roadmapLine {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.roadmapStep {
+  position: relative;
+  margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .roadmapStep {
+    flex-direction: row;
+  }
+  
+  .roadmapStep.left {
+    justify-content: flex-start;
+  }
+  
+  .roadmapStep.right {
+    justify-content: flex-end;
+  }
+}
+
+.roadmapDot {
+  position: absolute;
+  left: 11px;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--primary-accent);
+  border: 4px solid white;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .roadmapDot {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.roadmapContent {
+  padding-left: 3rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .roadmapContent {
+    width: 50%;
+    padding-left: 0;
+  }
+  
+  .left .roadmapContent {
+    padding-right: 3rem;
+    text-align: right;
+  }
+  
+  .right .roadmapContent {
+    padding-left: 3rem;
+  }
+}
+
+.roadmapStepTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.roadmapStepDescription {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+/* Projects Section */
+.projectsSection {
+  padding: 8rem 0;
+  background-color: #f9fafb;
+}
+
+.projectsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4rem;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .projectsHeader {
+    padding: 0;
+  }
+}
+
+.projectsTag {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--primary-accent);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.projectsTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  font-style: italic;
+}
+
+@media (min-width: 768px) {
+  .projectsTitle {
+    font-size: 2.5rem;
+  }
+}
+
+.projectsLink {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
+}
+
+.projectsLink:hover {
+  color: var(--primary-accent);
+}
+
+@media (min-width: 768px) {
+  .projectsLink {
+    display: flex;
+  }
+}
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .projectsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.projectCard {
+  border-radius: 2rem;
+  overflow: hidden;
+  background-color: white;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+}
+
+.projectImage {
+  width: 100%;
+  height: 20rem;
+  object-fit: cover;
+}
+
+.projectContent {
+  padding: 2rem;
+}
+
+.projectCategory {
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9ca3af;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.projectTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.projectDescription {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.625;
+}
+
+.projectLink {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  color: var(--text-dark);
+  border-bottom: 2px solid var(--primary-accent);
+  padding-bottom: 0.25rem;
+}
+
+/* CTA Section */
+.ctaSection {
+  padding: 8rem 1.5rem;
+  background-color: white;
+}
+
+@media (min-width: 1024px) {
+  .ctaSection {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+.ctaContainer {
+  position: relative;
+  max-width: 64rem;
+  margin: 0 auto;
+  background-color: black;
+  border-radius: 4rem;
+  padding: 3rem;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .ctaContainer {
+    padding: 6rem;
+  }
+}
+
+.ctaContent {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: white;
+}
+
+.ctaTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .ctaTitle {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ctaTitle {
+    font-size: 3.5rem;
+  }
+}
+
+.ctaSubtitle {
+  font-size: 1rem;
+  color: #9ca3af;
+  margin-bottom: 3rem;
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.625;
+}
+
+@media (min-width: 768px) {
+  .ctaSubtitle {
+    font-size: 1.125rem;
+  }
+}
+
+.ctaButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.ctaPrimary {
+  padding: 1.25rem 2.5rem;
+  background-color: var(--primary-accent);
+  color: black;
+  font-weight: 700;
+  border-radius: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.ctaPrimary:hover {
+  filter: brightness(0.95);
+}
+
+.ctaSecondary {
+  padding: 1.25rem 2.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-weight: 700;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ctaSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.ctaDecoration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 16rem;
+  height: 16rem;
+  background-color: var(--primary-accent);
+  opacity: 0.1;
+  border-radius: 9999px;
+  transform: translate(50%, -50%);
+}
+
+/* Footer */
+.footer {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  border-top: 1px solid #f3f4f6;
+}
+
+.footerText {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+  
+  .roadmapStepTitle {
+    font-size: 1.25rem;
+  }
+  
+  .projectTitle {
+    font-size: 1.25rem;
+  }
+  
+  .ctaTitle {
+    font-size: 1.75rem;
+  }
+  
+  .ctaButtons {
+    flex-direction: column;
+  }
+  
+  .ctaPrimary,
+  .ctaSecondary {
+    width: 100%;
+  }
+}

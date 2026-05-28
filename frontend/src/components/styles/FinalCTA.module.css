@@ -1,0 +1,84 @@
+
+/* CTA Section */
+.cta {
+  padding: 100px 0;
+  background: linear-gradient(135deg, rgb(172, 196, 112) 0%, rgba(184, 204, 133, 0.55) 100%),
+              url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&h=600&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  text-align: center;
+  color: white;
+}
+
+.ctaContent h2 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.ctaContent p {
+  font-size: 20px;
+  margin-bottom: 35px;
+  opacity: 0.9;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.consultation{
+  background: #005548;
+  background: #718a32;
+  color: white;
+}
+
+.consultation:hover, .consultation:focus{
+  background: #517002;
+}
+
+.quote{
+  background: white;
+  color: rgb(53, 51, 51);
+}
+
+.quote:hover, .quote:focus{
+  color: #384e00;
+}
+
+.btnPrimary {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btnPrimary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(47, 107, 255, 0.3);
+}
+
+.btnSecondary {
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid var(--color-white);
+}
+
+.btnSecondary:hover {
+  background: var(--color-white);
+  color: var(--color-primary);
+}

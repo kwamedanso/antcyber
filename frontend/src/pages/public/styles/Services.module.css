@@ -1,0 +1,451 @@
+/* Services.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-accent: #B8CC85;
+  --text-dark: #1a1a1a;
+  --text-muted: #525252;
+  --bg-light: #fdfdfd;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.services {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 6rem;
+  }
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  padding-top: 8rem;
+  padding-bottom: 6rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  overflow: hidden;
+  background-color: var(--bg-light);
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+.blobBg {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  top: -5rem;
+  right: -5rem;
+  background: radial-gradient(circle, rgba(184, 204, 133, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+  filter: blur(40px);
+}
+
+.heroContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.heroContent {
+  max-width: 48rem;
+}
+
+.heroTag {
+  color: var(--primary-accent);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 2rem;
+  line-height: 1.1;
+}
+
+@media (min-width: 1024px) {
+  .heroTitle {
+    font-size: 4.5rem;
+  }
+}
+
+.italicText {
+  font-style: italic;
+  font-weight: 300;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: #6b7280;
+  line-height: 1.625;
+}
+
+/* Services Grid Section */
+.servicesGrid {
+  padding: 6rem 0;
+  background-color: rgba(249, 250, 251, 0.5);
+}
+
+.servicesGridContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .servicesGridContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .servicesGridContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.serviceCard {
+  padding: 2.5rem;
+  border-radius: 2.5rem;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  height: 100%;
+}
+
+.serviceCardDelay0 {
+  transition-delay: 0ms;
+}
+
+.serviceCardDelay1 {
+  transition-delay: 100ms;
+}
+
+.serviceCardDelay2 {
+  transition-delay: 200ms;
+}
+
+.serviceIcon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.iconBgaccent {
+  background-color: var(--primary-accent);
+  color: black;
+}
+
+.iconBgdark {
+  background-color: black;
+  color: white;
+}
+
+.iconBglight {
+  background-color: #f3f4f6;
+  color: black;
+}
+
+.serviceTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.serviceDescription {
+  color: #6b7280;
+  line-height: 1.625;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.serviceFeatures {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.serviceFeature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.checkIcon {
+  color: var(--primary-accent);
+}
+
+.serviceLink {
+  margin-top: auto;
+}
+
+.learnMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text-dark);
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.learnMore:hover {
+  border-color: var(--primary-accent);
+}
+
+/* Methodology Section */
+.methodology {
+  padding: 6rem 0;
+  background-color: white;
+  overflow: hidden;
+}
+
+.methodologyGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .methodologyGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.methodologyTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .methodologyTitle {
+    font-size: 2.5rem;
+  }
+}
+
+.accentItalic {
+  color: var(--primary-accent);
+  font-style: italic;
+}
+
+.methodologySteps {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.methodologyStep {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  border: 2px solid var(--primary-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.stepTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.stepDescription {
+  color: #6b7280;
+  line-height: 1.625;
+}
+
+.methodologyVisual {
+  position: relative;
+}
+
+.methodologyCard {
+  background-color: var(--primary-accent);
+  border-radius: 3rem;
+  padding: 3rem;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: black;
+  overflow: hidden;
+  position: relative;
+}
+
+.methodologyCardOverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 3rem;
+  opacity: 0.1;
+  transition: transform 0.7s ease;
+}
+
+.methodologyCard:hover .methodologyCardOverlay {
+  transform: scale(1.1);
+}
+
+.methodologyIcon {
+  width: 16rem;
+  height: 16rem;
+}
+
+.methodologyCardTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .methodologyCardTitle {
+    font-size: 2.5rem;
+  }
+}
+
+.methodologyCardSubtitle {
+  font-size: 1.125rem;
+  opacity: 0.8;
+  position: relative;
+  z-index: 1;
+}
+
+/* Tech Stack Section */
+.techStack {
+  padding: 5rem 0;
+  background-color: #f9fafb;
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.techStackContent {
+  text-align: center;
+}
+
+.techStackTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 3rem;
+}
+
+.techStackGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  opacity: 0.4;
+}
+
+@media (min-width: 768px) {
+  .techStackGrid {
+    gap: 4rem;
+  }
+}
+
+.techStackItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.techStackName {
+  font-size: 1.125rem;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .serviceCard {
+    padding: 1.5rem;
+  }
+  
+  .methodologyCard {
+    padding: 1.5rem;
+  }
+  
+  .methodologyCardTitle {
+    font-size: 1.5rem;
+  }
+  
+  .techStackItem {
+    font-size: 1rem;
+  }
+  
+  .techStackName {
+    font-size: 0.875rem;
+  }
+}

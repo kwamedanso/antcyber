@@ -1,0 +1,316 @@
+/* TeamMember.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary-accent: #B8CC85;
+    --text-dark: #1a1a1a;
+}
+
+.container{
+    position: relative;
+}
+
+.closeBtn{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: #3d3d3d;
+    z-index: 300;
+}
+
+.profileCard {
+    max-width: 64rem;
+    width: 100%;
+    border-radius: 2.5rem;
+    padding: 2rem;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    z-index: 200;
+}
+
+@media (min-width: 768px) {
+    .profileCard {
+        flex-direction: row;
+        gap: 3rem;
+        padding: 2.5rem;
+    }
+}
+
+/* Left Column */
+.leftColumn {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .leftColumn {
+        width: 32%;
+    }
+}
+
+.imageSection {
+    width: 100%;
+}
+
+.imageWrapper {
+    aspect-ratio: 3/4;
+    width: 100%;
+    border-radius: 1.5rem;
+    background-color: #f3f4f6;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.profileImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profileCard:hover .profileImage {
+    filter: grayscale(0%);
+}
+
+.imageFallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+    color: #9ca3af;
+}
+
+.fallbackIcon {
+    margin-bottom: 0.5rem;
+    opacity: 0.3;
+}
+
+.fallbackText {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    opacity: 0.4;
+}
+
+.metaInfo {
+    margin-top: 1.5rem;
+}
+
+.name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.25rem;
+}
+
+.title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9ca3af;
+    font-weight: 700;
+}
+
+/* Social Links */
+.socialLinks {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+    .socialLinks {
+        margin-top: 0;
+    }
+}
+
+.socialIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    border: 1px solid #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+/* Divider */
+.divider {
+    display: none;
+    width: 1px;
+    background-color: #f3f4f6;
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .divider {
+        display: block;
+    }
+}
+
+/* Right Column */
+.rightColumn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Education Section */
+.educationSection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.educationTag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9ca3af;
+    background-color: #f9fafb;
+    border: 1px solid #f3f4f6;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+}
+
+.educationIcon {
+    width: 0.875rem;
+    height: 0.875rem;
+    color: var(--primary-accent);
+}
+
+/* Bio Text */
+.bio {
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.625;
+    margin-bottom: 2rem;
+}
+
+.bioContainer{
+    overflow-y: scroll;
+    height: 20rem;
+    max-height: 20rem;
+    scrollbar-width: none;
+}
+
+@media (min-width: 768px) {
+    .bio {
+        font-size: 0.875rem;
+    }
+}
+
+/* Competencies Section */
+.competenciesLabel {
+    display: block;
+    font-size: 0.625rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9ca3af;
+    margin-bottom: 1rem;
+}
+
+.tagsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    color: #4b5563;
+    background-color: #f9f9f9;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profileCard {
+        max-height: 80vh;
+        padding: 1.5rem;
+        border-radius: 2rem;
+        overflow-y: scroll;
+    }
+
+    .imageWrapper{
+        height: 20rem;
+    }
+    .profileImage {
+        width: 100%;
+        height: auto;
+    }
+
+    .name {
+        font-size: 1.25rem;
+    }
+
+    .educationTag {
+        font-size: 0.5625rem;
+        padding: 0.25rem 0.75rem;
+    }
+
+    .tag {
+        font-size: 0.6875rem;
+        padding: 0.375rem 0.875rem;
+    }
+
+    .bio {
+        font-size: 0.8125rem;
+    }
+}
