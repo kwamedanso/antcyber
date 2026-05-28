@@ -1,0 +1,1 @@
+import{c as e,n as t,r as n,t as r}from"./jsx-runtime-BtGyVdPp.js";t();var i=e(n(),1);r();var a=(0,i.createContext)(),o=()=>(0,i.useContext)(a);export{o as t};
