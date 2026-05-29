@@ -92,13 +92,13 @@ const Home = () => {
   const projects = [
     { category: 'Fintech', title: 'Banking Transformation', image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800' },
     { category: 'HealthTech', title: 'HealthCore Portal', image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800' },
-    { category: 'AI / ML', title: 'Neural Insight Engine', image: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800' }
+    { category: 'AI / ML', title: 'Neural Insight Engine', image: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }
   ];
 
   const testimonials = [
-    { name: 'Emily Carter', role: 'CTO, NexTech Solutions', text: 'Their team exceeded our expectations in every way. From cloud migration to custom software, they delivered fast and stayed ahead of every challenge.' },
-    { name: 'Rajesh Mehra', role: 'Founder & CEO, Finlytics', text: 'They didn\'t just build us a website—they helped us rethink how our tech supports our customer journey. Truly professional and reliable.' },
-    { name: 'Sophia Nguyen', role: 'Manager, BrightEdge', text: 'The ongoing support has made a real impact on our daily operations. Our infrastructure is now more secure and scalable than ever.' }
+    { name: 'Simon Pullar', role: 'Regional Director - West Africa, Kortext', text: 'Their team exceeded our expectations in every way. From cloud migration to custom software, they delivered fast and stayed ahead of every challenge.' },
+    { name: 'Ghana TVET Service', role: 'Human Resources Directorate, Ghana TVET Service', text: 'They didn\'t just build us an ERP Web Application, they helped us rethink how our tech supports our customer journey. Truly professional and reliable.' },
+    { name: 'Alle-AI Ltd.', role: 'Senior Software Engineer, Alle-AI Ltd.', text: 'The ongoing support has made a real impact on our daily operations. Our infrastructure is now more secure and scalable than ever.' }
   ];
 
   const blogPosts = [

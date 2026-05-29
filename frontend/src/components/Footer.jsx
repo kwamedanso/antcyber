@@ -173,7 +173,7 @@ const Footer = () => {
             <div className={styles.footerBottom}>
                 <div className={styles.container}>
                     <p className={styles.footerCopyright}>
-                        &copy; 2025 Ant Cyber Engineering Ltd. All rights reserved.
+                        &copy; {new Date().getFullYear()} Ant Cyber Engineering Ltd. All rights reserved.
                     </p>
                 </div>
             </div>

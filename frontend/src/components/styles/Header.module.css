@@ -417,7 +417,7 @@
 /* Active button styles */
 .activeButton {
     border-color: var(--primary-accent) !important;
-    color: var(--primary-accent) !important;
+    /* color: var(--primary-accent) !important; */
 }
 
 /* Mobile active link styles */

@@ -7,6 +7,7 @@ import ceoProfile from "../../assets/antwi.jpg"
 import legalProfile from "../../assets/legal.jpeg"
 import developerProfile from "../../assets/developer.jpeg"
 import rolandProfile from "../../assets/roland.jpg"
+import claudetteProfile from "../../assets/claudette.jpeg"
 // import strategyProfile from "../../assets/strategy.jpg"
 // import operationsProfile from "../../assets/operations.jpg"
 
@@ -79,6 +80,7 @@ const About = () => {
   ];
 
   const projects = [
+    { client: 'Ghana TVET Service', title: 'Human Resources Management Information System (HRMIS)', description: 'Development of an HRMIS for the Ghana Technical and Vocational Education and Training Service, enhancing human resource management efficiency.' },
     { client: 'Ministry of Education, Ghana', title: 'E-Payment Platform for Teachers', description: 'Automated digital wallet system integrating banks and mobile money for allowance payments.' },
     { client: 'Lands Commission, Ghana', title: 'ERP HR Management System', description: 'Fully integrated workforce and payroll solution for national land administration.' },
     { client: 'Ministry of Health, Ghana', title: 'Kortext E-Learning Deployment', description: 'Nationwide digital library and learning platform for healthcare institutions.' },
@@ -109,9 +111,9 @@ const About = () => {
         Data Analytics & Statistical Reporting: Utilizing data for strategic decision-making and performance improvement.
         Strategic Leadership & Team Management: Leading teams focused on innovation and continuous development.`,
         bio3: `MSc in Artificial Intelligence for Business
-        Swiss Business School, Zurich, Switzerland (2025)
+        Swiss Business School, Zurich, Switzerland
         BSc in Computer Science
-        Kwame Nkrumah University of Science & Technology, Kumasi (2008)
+        Kwame Nkrumah University of Science & Technology, Kumasi
         Certifications
         PRINCE2 Practitioner – Sterling Group, United Kingdom
         Cisco Certified Network Associate (CCNA)
@@ -189,6 +191,64 @@ Project Deployment Success: Led the deployment of a CRM web application, resulti
       in Electrical & Computer Engineering from Cornell University. He is well versed in backend and frontend development 
       and has developed several products from ideation to deployment. He is also an expert in integrating AI into everyday 
       applications. He is passionate about using his technical expertise to solve problems that are impactful to society.`,
+      competencies : [
+        "Fullstack Development",
+        "AI Integration",
+        "FinTech",
+        "EdTech",
+        "Product Ideation"
+      ],
+      socialLinks : {
+        linkedin: "#",
+        twitter: "#",
+        github: "#"
+      },
+      email : null,
+      location : null,
+      setInfoCard: false,
+    },
+    {
+      id: 5,
+      name : "Claudette Boa Amponsem",
+      title : "Executive Director",
+      image : claudetteProfile,
+      education : [
+        { degree: "M. Eng.", institution: "Cornell University", year: "2014" },
+        { degree: "B. Sc.", institution: "Cornell University", year: "2013" }
+      ],
+      bio : `Claudette Boa Amponsem is a dynamic and results-driven technology executive with over 13 years of 
+      extensive experience in product ownership and management, specializing in Agile product development, cybersecurity, 
+      and digital transformation. As the Co-Founder and Executive Director  of Ant Cyber Engineering Ltd London , United Kingdom , 
+      she leads strategic operations and product innovation, driving impactful initiatives in cybersecurity, software development,
+       and IT consultancy.
+Claudette has a proven track record of translating complex business needs into actionable product roadmaps and managing cross-functional 
+teams to deliver user-focused software solutions. Her expertise spans various sectors, including healthcare, e-commerce, and public sector 
+initiatives, with significant experience in Electronic Patient Records (EPR), NHS Digital Platforms, and regulatory compliance.
+Key Competencies:
+Agile Delivery & Product Management: Proficient in Agile methodologies (Scrum, Kanban, Lean), Claudette excels in backlog prioritization and user story development.
+Data-Driven Decision Making: She leverages data and customer insights to guide product strategy and roadmaps, ensuring alignment with business goals.
+Stakeholder Engagement: Claudette effectively collaborates with both technical and non-technical stakeholders, fostering seamless communication and collaboration.
+`,
+bio2: `Education:
+Master's in Health Policy Ethics and Law (Keele University, Merit)
+Bachelor's in Biomedical Science (Royal Holloway University of London, Second Class Honours)
+Certifications:
+Certified Scrum Product Owner
+PRINCE2® Foundation and Practitioner
+Databricks Lakehouse Fundamentals
+PG Program in Data Science, Machine Learning & Neural Networks
+Professional Experience:
+Co-Founder and CEO, Ant Cyber Engineering (Mar 2024 – Present)
+Chief Product Technology and Strategy Officer, Alle-AI (Feb 2024 – Present)
+AI Product Manager, CK Hutchison Holdings (Sept 2023 – Nov 2024)
+Product Manager, NHS Digital (Nov 2021 – Feb 2023)
+Data Product Owner, Public Health England (Feb 2020 – Oct 2021)
+Claudette's technical skills are complemented by her proficiency 
+in tools such as Jira, Confluence, Power BI, and various cloud-based 
+solutions. Her commitment to continuous learning and innovation positions 
+her as a leader in driving technological advancements and operational excellence across 
+high-impact technology initiatives. Passionate about improving customer experiences, 
+Claudette excels at optimizing product strategies and fostering collaboration to achieve measurable results.`,
       competencies : [
         "Fullstack Development",
         "AI Integration",
