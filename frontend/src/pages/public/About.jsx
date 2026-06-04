@@ -213,8 +213,8 @@ Project Deployment Success: Led the deployment of a CRM web application, resulti
       title : "Executive Director",
       image : claudetteProfile,
       education : [
-        { degree: "M. Eng.", institution: "Cornell University", year: "2014" },
-        { degree: "B. Sc.", institution: "Cornell University", year: "2013" }
+        { degree: "M. Eng.", institution: "Keele University, Merit", year: "2014" },
+        { degree: "B. Sc.", institution: "Royal Holloway University of London", year: "2013" }
       ],
       bio : `Claudette Boa Amponsem is a dynamic and results-driven technology executive with over 13 years of 
       extensive experience in product ownership and management, specializing in Agile product development, cybersecurity, 
