@@ -22,6 +22,7 @@ const createSuperAdmin = async ({ email, password, first_name, last_name }) => {
     if (userCheck.rows.length > 0) {
         const error = new Error('System is already set up. This route is disabled.');
         error.statusCode = 403;
+        error.code = "SUPER_ADMIN_ALREADY_EXIST"
         throw error;
     }
 

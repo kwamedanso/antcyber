@@ -25,7 +25,16 @@ const Setup = () => {
       navigate('/login');
     },
     onError: (error) => {
-      toast.error(error?.response?.data?.message || 'Setup failed.', { duration: 4000 });
+            const code = error?.response?.data?.code;
+
+            if (code === 'SUPER_ADMIN_ALREADY_EXIST') {
+                    toast.error(
+                      'A Super Admin User already exist navigate to the login page.',
+                      { duration: 4000 }
+                    );
+                    return;
+                  }
+      // toast.error(error?.response?.data?.message || 'Setup failed.', { duration: 4000 });
     }
   });
 

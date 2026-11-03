@@ -9,6 +9,8 @@ const setupSuperAdmin = async (req, res, next) => {
             return res.status(400).json({ message: 'All fields are required.' });
         }
 
+        console.log(email, password, first_name, last_name);
+
         const user = await createSuperAdmin({
             email,
             password,
@@ -21,6 +23,14 @@ const setupSuperAdmin = async (req, res, next) => {
             data: user
         });
     } catch (error) {
+
+        if (error.code === 'SUPER_ADMIN_ALREADY_EXIST') {
+            return res.status(403).json({
+                success: false,
+                code: 'SUPER_ADMIN_ALREADY_EXIST',
+                message: error.message
+            });
+        }
         next(error);
     }
 };

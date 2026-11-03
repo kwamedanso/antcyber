@@ -56,10 +56,11 @@ app.use('/api/auth', limiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
-app.use("/api/reports", require('./routes/report'))
+app.use("/api/reports", require('./routes/report'));
 app.use('/api/rbac', require('./routes/rbac'));
 app.use('/api/staff', require('./routes/staff'));
 app.use('/api/notifications', require('./routes/notification'));
+app.use("/api/setup", require("./routes/setup"));
 
 
 
