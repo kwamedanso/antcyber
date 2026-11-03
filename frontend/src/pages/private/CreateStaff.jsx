@@ -1,11 +1,11 @@
 // pages/staff/CreateStaff.jsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { z } from 'zod';
 import { toast, Toaster } from 'sonner';
 import {
-  FiArrowLeft, FiUser, FiBriefcase, FiPlus, FiTrash2, FiShield, FiCheck, FiChevronDown, FiChevronRight
+  FiArrowLeft, FiUser, FiPlus, FiTrash2, FiShield, FiCheck, FiChevronDown, FiChevronRight
 } from 'react-icons/fi';
 import TextInput from '../../components/ui/TextInput';
 import SelectInput from '../../components/ui/SelectInput';
@@ -13,6 +13,7 @@ import DatePickerInput from '../../components/ui/DatePickerInput';
 import Button from '../../components/ui/Button';
 import { usePrivateQuery } from '../../hooks/usePrivateQuery';
 import { usePrivateMutation } from '../../hooks/usePrivateMutation';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import styles from './styles/CreateStaff.module.css';
 
 // ----------------------------------------------------------------------------
@@ -59,6 +60,7 @@ const EDU_TYPES = [
 
 const CreateStaff = () => {
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
   const [activeTab, setActiveTab] = useState('details');
   const [errors, setErrors] = useState({});
 
@@ -70,6 +72,9 @@ const CreateStaff = () => {
     contacts: [], identifications: [], addresses: [], education: [],
     role_ids: [], permission_ids: [],
   });
+
+  // Track permissions provided by each role
+  const [rolePermissionMap, setRolePermissionMap] = useState({});
 
   useEffect(() => { document.title = 'Create Staff | Ant Cyber Portal'; }, []);
 
@@ -121,6 +126,48 @@ const CreateStaff = () => {
     });
   };
 
+  // --- Permission & Role Selection Logic ---
+  const handleRoleToggle = async (roleId, isChecked) => {
+    // 1. Update selected roles
+    setFormData(prev => {
+      const newRoleIds = isChecked 
+        ? [...prev.role_ids, roleId]
+        : prev.role_ids.filter(id => id !== roleId);
+      return { ...prev, role_ids: newRoleIds };
+    });
+
+    // 2. Fetch and map permissions if checking a new role
+    if (isChecked) {
+      try {
+        const res = await axiosPrivate.get(`/api/rbac/roles/${roleId}/permissions`);
+        const rolePerms = res.data.data;
+        
+        setRolePermissionMap(prev => ({ ...prev, [roleId]: rolePerms }));
+        
+        // Auto-check these permissions
+        setFormData(prev => {
+          const newPerms = new Set([...prev.permission_ids, ...rolePerms]);
+          return { ...prev, permission_ids: Array.from(newPerms) };
+        });
+      } catch (err) {
+        toast.error('Failed to load role permissions');
+      }
+    } else {
+      // Remove permissions if no other selected role grants them
+      const rolePerms = rolePermissionMap[roleId] || [];
+      const otherRolesPerms = formData.role_ids
+        .filter(id => id !== roleId)
+        .flatMap(id => rolePermissionMap[id] || []);
+        
+      setFormData(prev => {
+        const newPerms = prev.permission_ids.filter(id => 
+          !rolePerms.includes(id) || otherRolesPerms.includes(id)
+        );
+        return { ...prev, permission_ids: newPerms };
+      });
+    }
+  };
+
   const handlePermToggle = (permId) => {
     setFormData(prev => {
       const isSel = prev.permission_ids.includes(permId);
@@ -130,6 +177,34 @@ const CreateStaff = () => {
           ? prev.permission_ids.filter(id => id !== permId)
           : [...prev.permission_ids, permId]
       };
+    });
+  };
+
+  const handleGroupToggle = (groupPermissions) => {
+    const groupIds = groupPermissions.map(p => p.id);
+    const allSelected = groupIds.every(id => formData.permission_ids.includes(id));
+
+    setFormData(prev => {
+      if (allSelected) {
+        return { ...prev, permission_ids: prev.permission_ids.filter(id => !groupIds.includes(id)) };
+      } else {
+        const newIds = new Set([...prev.permission_ids, ...groupIds]);
+        return { ...prev, permission_ids: Array.from(newIds) };
+      }
+    });
+  };
+
+  const handleModuleToggleAll = (moduleData) => {
+    const allIdsInModule = Object.values(moduleData).flat().map(p => p.id);
+    const allSelected = allIdsInModule.every(id => formData.permission_ids.includes(id));
+
+    setFormData(prev => {
+      if (allSelected) {
+        return { ...prev, permission_ids: prev.permission_ids.filter(id => !allIdsInModule.includes(id)) };
+      } else {
+        const newIds = new Set([...prev.permission_ids, ...allIdsInModule]);
+        return { ...prev, permission_ids: Array.from(newIds) };
+      }
     });
   };
 
@@ -165,16 +240,42 @@ const CreateStaff = () => {
         formatted[issue.path[0]] = issue.message;
       });
       setErrors(formatted);
-      setActiveTab('details'); // Switch back to details tab if validation fails
+      setActiveTab('details');
       toast.error('Please fix the highlighted fields.');
       return;
     }
 
     setErrors({});
+
+    // Build the permission overrides for the backend
+    const inheritedPerms = new Set(
+      formData.role_ids.flatMap(roleId => rolePermissionMap[roleId] || [])
+    );
+
+    const granted = [];
+    const denied = [];
+
+    for (const permId of formData.permission_ids) {
+      if (!inheritedPerms.has(permId)) {
+        granted.push(permId);
+      }
+    }
+
+    for (const inheritedPermId of inheritedPerms) {
+      if (!formData.permission_ids.includes(inheritedPermId)) {
+        denied.push(inheritedPermId);
+      }
+    }
+
+    const payload = {
+      ...formData,
+      permission_overrides: { granted, denied }
+    };
+
     createStaff({
       url: '/api/staff',
       method: 'POST',
-      data: formData,
+      data: payload,
     });
   };
 
@@ -353,10 +454,7 @@ const CreateStaff = () => {
                       <input
                         type="checkbox"
                         checked={formData.role_ids.includes(role.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) setFormData(p => ({ ...p, role_ids: [...p.role_ids, role.id] }));
-                          else setFormData(p => ({ ...p, role_ids: p.role_ids.filter(id => id !== role.id) }));
-                        }}
+                        onChange={(e) => handleRoleToggle(role.id, e.target.checked)}
                         className={styles.hiddenCheckbox}
                       />
                       <div className={styles.checkboxIndicator}>
@@ -371,41 +469,64 @@ const CreateStaff = () => {
 
                 {/* Direct Permissions */}
                 <h3 className={styles.sectionTitle}>Direct Permissions</h3>
-                <p className={styles.helperText}>Grant specific permissions beyond what the roles provide.</p>
+                <p className={styles.helperText}>Grant specific permissions beyond what the roles provide, or uncheck to deny.</p>
                 
                 {permsLoading ? (
                   <div className={styles.loading}>Loading permissions...</div>
                 ) : (
                   <div className={styles.accordion}>
-                    {Object.entries(groupedPermissions).map(([module, resources]) => (
-                      <div key={module} className={styles.accordionItem}>
-                        <button type="button" className={styles.accordionHeader} onClick={() => setExpandedModules(p => ({ ...p, [module]: !p[module] }))}>
-                          {expandedModules[module] ? <FiChevronDown size={16} /> : <FiChevronRight size={16} />}
-                          <span>{module}</span>
-                        </button>
-                        
-                        {expandedModules[module] && (
-                          <div className={styles.accordionBody}>
-                            {Object.entries(resources).map(([resource, perms]) => (
-                              <div key={resource} className={styles.resourceGroup}>
-                                <span className={styles.resourceName}>{resource}</span>
-                                <div className={styles.permissionsGrid}>
-                                  {perms.map(perm => (
-                                    <label key={perm.id} className={`${styles.permCard} ${formData.permission_ids.includes(perm.id) ? styles.permCardActive : ''}`}>
-                                      <input type="checkbox" checked={formData.permission_ids.includes(perm.id)} onChange={() => handlePermToggle(perm.id)} className={styles.hiddenCheckbox} />
-                                      <div className={styles.checkboxIndicator}>
-                                        {formData.permission_ids.includes(perm.id) && <FiCheck size={12} />}
-                                      </div>
-                                      <span>{perm.display_name}</span>
-                                    </label>
-                                  ))}
-                                </div>
-                              </div>
-                            ))}
+                    {Object.entries(groupedPermissions).map(([moduleName, resources]) => {
+                      const isExpanded = expandedModules[moduleName];
+                      const moduleIds = Object.values(resources).flat().map(p => p.id);
+                      const allModuleSelected = moduleIds.length > 0 && moduleIds.every(id => formData.permission_ids.includes(id));
+
+                      return (
+                        <div key={moduleName} className={styles.accordionItem}>
+                          <div className={styles.accordionHeader}>
+                            <button type="button" className={styles.expandBtn} onClick={() => setExpandedModules(p => ({ ...p, [moduleName]: !p[moduleName] }))}>
+                              {isExpanded ? <FiChevronDown size={18} /> : <FiChevronRight size={18} />}
+                              <span className={styles.moduleName}>{moduleName}</span>
+                            </button>
+                            <label className={styles.selectAllLabel}>
+                              <input type="checkbox" checked={allModuleSelected} onChange={() => handleModuleToggleAll(resources)} />
+                              Select All
+                            </label>
                           </div>
-                        )}
-                      </div>
-                    ))}
+
+                          {isExpanded && (
+                            <div className={styles.accordionBody}>
+                              {Object.entries(resources).map(([resourceName, perms]) => {
+                                const resourceIds = perms.map(p => p.id);
+                                const allResourceSelected = resourceIds.every(id => formData.permission_ids.includes(id));
+
+                                return (
+                                  <div key={resourceName} className={styles.resourceGroup}>
+                                    <div className={styles.resourceHeader}>
+                                      <span className={styles.resourceName}>{resourceName}</span>
+                                      <button type="button" className={styles.selectGroupBtn} onClick={() => handleGroupToggle(perms)}>
+                                        {allResourceSelected ? 'Unselect Group' : 'Select Group'}
+                                      </button>
+                                    </div>
+                                    <div className={styles.permissionsGrid}>
+                                      {perms.map(perm => {
+                                        const isSelected = formData.permission_ids.includes(perm.id);
+                                        return (
+                                          <label key={perm.id} className={`${styles.permCard} ${isSelected ? styles.permCardActive : ''}`}>
+                                            <input type="checkbox" checked={isSelected} onChange={() => handlePermToggle(perm.id)} className={styles.hiddenCheckbox} />
+                                            <div className={styles.checkboxIndicator}>{isSelected && <FiCheck size={12} />}</div>
+                                            <span>{perm.display_name}</span>
+                                          </label>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
 

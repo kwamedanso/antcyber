@@ -80,12 +80,14 @@ const normalizeDate = (value, fieldName) => {
 // STAFF ID GENERATOR
 // ============================================================================
 const generateStaffId = async (client) => {
-    // const yearSuffix = String(new Date().getFullYear()).slice(-2);
+    // Extract the number part (e.g., '001' becomes 1) and order by it in SQL
     const result = await client.query(
-        `SELECT staff_id FROM staffs 
+        `SELECT staff_id 
+         FROM staffs 
          WHERE staff_id LIKE $1 
-         ORDER BY staff_id DESC LIMIT 1`,
-        [`${STAFF_ID_PREFIX}%`]
+         ORDER BY CAST(SUBSTRING(staff_id FROM '([0-9]+)$') AS INTEGER) DESC 
+         LIMIT 1`,
+        [`${STAFF_ID_PREFIX}-%`]
     );
 
     let nextNumber = 1;
@@ -93,9 +95,12 @@ const generateStaffId = async (client) => {
         const last = result.rows[0].staff_id;
         const parts = last.split('-');
         const seq = parseInt(parts[parts.length - 1], 10);
-        if (!Number.isNaN(seq)) nextNumber = seq + 1;
+        if (!Number.isNaN(seq)) {
+            nextNumber = seq + 1;
+        }
     }
-    return `${STAFF_ID_PREFIX}-${String(nextNumber).padStart(2, '0')}`;
+    
+    return `${STAFF_ID_PREFIX}-${String(nextNumber).padStart(3, '0')}`;
 };
 
 // ============================================================================
@@ -170,8 +175,8 @@ const createStaff = async (payload, metaData = {}) => {
     // 1. Generate Default Password
     // ------------------------------------------------------------------
     const firstInitial = first_name.trim().charAt(0).toUpperCase();
-    const secondChar = last_name.trim().charAt(0).toLowerCase(); // e.g. John Doe -> Jo123$
-    const otherLastNameChar = last_name.trim().charAt(1).toLowerCase(); // e.g. John Doe -> JDoe123$
+    const secondChar = last_name.trim().charAt(0).toUpperCase(); // e.g. John Doe -> Jo123$
+    const otherLastNameChar = last_name.trim().slice(1).toLowerCase(); // e.g. John Doe -> JDoe123$
     const defaultPassword = `${firstInitial}${secondChar}${otherLastNameChar}123$`;
     const passwordHash = await bcrypt.hash(defaultPassword, BCRYPT_ROUNDS);
 
@@ -289,11 +294,24 @@ const createStaff = async (payload, metaData = {}) => {
         }
     }
 
-    if (Array.isArray(permission_ids) && permission_ids.length > 0) {
+     if (payload.permission_overrides) {
         try {
-            await assignDirectPermissions(result.user.id, permission_ids, true, actorUserId);
+            const { granted, denied } = payload.permission_overrides;
+            
+            // 1. Clear existing overrides
+            await query(`DELETE FROM user_permissions WHERE user_id = $1`, [userId]);
+            
+            // 2. Insert explicit grants
+            if (granted && granted.length > 0) {
+                await assignDirectPermissions(userId, granted, true, actorUserId);
+            }
+            
+            // 3. Insert explicit denies
+            if (denied && denied.length > 0) {
+                await assignDirectPermissions(userId, denied, false, actorUserId);
+            }
         } catch (error) {
-            console.error(`[Staff Service] Permission assignment failed for ${result.user.id}:`, error);
+            console.error(`[Staff Service] Permission override failed for ${userId}:`, error);
         }
     }
 
@@ -366,6 +384,7 @@ const updateStaff = async (staffId, payload, metaData = {}) => {
 
     // 2. Update Roles & Permissions (Run after core update)
     const userId = updatedStaff.user_id;
+    // console.log(userId, role_ids)
     
     // Handle Roles Update
     if (Array.isArray(role_ids)) {
@@ -379,52 +398,25 @@ const updateStaff = async (staffId, payload, metaData = {}) => {
         }
     }
 
-    // Handle Permissions Update (With Deny Logic)
-    if (Array.isArray(permission_ids)) {
+    // In services/staff/staff.service.js
+    if (payload.permission_overrides) {
         try {
-            // 1. Get ALL permissions inherited from the updated roles
-            const rolePermsResult = await query(
-                `SELECT DISTINCT rp.permission_id 
-                 FROM user_roles ur
-                 JOIN role_permissions rp ON rp.role_id = ur.role_id
-                 JOIN roles r ON r.id = ur.role_id
-                 WHERE ur.user_id = $1 AND r.is_active = TRUE`,
-                [userId]
-            );
-            const rolePermissionIds = rolePermsResult.rows.map(r => r.permission_id);
-
-            // 2. Clear existing direct overrides (both grants and denies)
+            const { granted, denied } = payload.permission_overrides;
+            
+            // 1. Clear existing overrides
             await query(`DELETE FROM user_permissions WHERE user_id = $1`, [userId]);
-
-            const permissionsToGrant = [];
-            const permissionsToDeny = [];
-
-            // 3. Identify explicit Grants (Selected in UI but NOT in Roles)
-            for (const permId of permission_ids) {
-                if (!rolePermissionIds.includes(permId)) {
-                    permissionsToGrant.push(permId);
-                }
+            
+            // 2. Insert explicit grants
+            if (granted && granted.length > 0) {
+                await assignDirectPermissions(userId, granted, true, actorUserId);
             }
-
-            // 4. Identify explicit Denies (IN Roles but NOT selected in UI)
-            for (const rolePermId of rolePermissionIds) {
-                if (!permission_ids.includes(rolePermId)) {
-                    permissionsToDeny.push(rolePermId);
-                }
+            
+            // 3. Insert explicit denies
+            if (denied && denied.length > 0) {
+                await assignDirectPermissions(userId, denied, false, actorUserId);
             }
-
-            // 5. Apply Grants
-            if (permissionsToGrant.length > 0) {
-                await assignDirectPermissions(userId, permissionsToGrant, true, actorUserId);
-            }
-
-            // 6. Apply Denies
-            if (permissionsToDeny.length > 0) {
-                await assignDirectPermissions(userId, permissionsToDeny, false, actorUserId);
-            }
-
         } catch (error) {
-            console.error(`[Staff Service] Permission update failed for ${userId}:`, error);
+            console.error(`[Staff Service] Permission override failed for ${userId}:`, error);
         }
     }
 

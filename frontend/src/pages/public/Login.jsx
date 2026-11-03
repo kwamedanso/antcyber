@@ -60,7 +60,7 @@ const Login = () => {
       // validated so the user doesn't retype them.
       if (code === 'PASSWORD_CHANGE_REQUIRED') {
         toast.info('Please set a new password to continue.', { duration: 4000 });
-        navigate('/forced-change-password', {
+        navigate('/change-default-password', {
           replace: true,
           state: {
             email: variables.data.email,

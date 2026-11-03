@@ -405,29 +405,24 @@ const loginUser = async (credentials, metaData = {}) => {
  *   - Revokes all refresh tokens on success.
  */
 const changePasswordWithCredentials = async (
-    staffId,
+    email,
     oldPassword,
     newPassword,
     metaData = {}
 ) => {
-    const { ip_address: _ip } = metaData; // reserved for future audit use
+    const { ip_address: _ip } = metaData;
 
-    if (typeof staffId !== 'string' || typeof oldPassword !== 'string' || typeof newPassword !== 'string') {
+    // 1. Basic shape check
+    if (typeof email !== 'string' || typeof oldPassword !== 'string' || typeof newPassword !== 'string') {
         const error = new Error('Invalid credentials.');
         error.statusCode = 401;
         error.code = 'INVALID_CREDENTIALS';
         throw error;
     }
 
-    const normalizedStaffId = staffId.trim();
+    const normalizedEmail = email.trim().toLowerCase();
 
-    if (!STAFF_ID_REGEX.test(normalizedStaffId)) {
-        const error = new Error('Invalid credentials.');
-        error.statusCode = 401;
-        error.code = 'INVALID_CREDENTIALS';
-        throw error;
-    }
-
+    // 2. Validate new password strength
     validatePassword(newPassword, 'New password');
 
     if (oldPassword === newPassword) {
@@ -437,13 +432,14 @@ const changePasswordWithCredentials = async (
         throw error;
     }
 
+    // 3. Fetch the user
     const userResult = await query(
         `SELECT id, is_active, password_hash,
                 failed_login_attempts, locked_until, must_change_password
          FROM users
-         WHERE staff_id = $1
+         WHERE email = $1
          LIMIT 1`,
-        [normalizedStaffId]
+        [normalizedEmail]
     );
 
     const user = userResult.rows[0];
@@ -454,12 +450,14 @@ const changePasswordWithCredentials = async (
         throw error;
     }
 
+    // 4. Check if account is locked
     if (user.locked_until && new Date(user.locked_until) > new Date()) {
         const error = new Error('Account is temporarily locked due to too many failed login attempts.');
         error.statusCode = 403;
         throw error;
     }
 
+    // 5. Ensure this route is only used for FORCED password changes
     if (!user.must_change_password) {
         const error = new Error('This account does not require a forced password change.');
         error.statusCode = 403;
@@ -467,9 +465,11 @@ const changePasswordWithCredentials = async (
         throw error;
     }
 
+    // 6. Verify the old password
     const passwordValid = await bcrypt.compare(oldPassword, user.password_hash);
 
     if (!passwordValid) {
+        // Increment failed attempts (security measure)
         await query(
             `UPDATE users
              SET failed_login_attempts = LEAST(COALESCE(failed_login_attempts, 0) + 1, $1),
@@ -488,6 +488,7 @@ const changePasswordWithCredentials = async (
         throw error;
     }
 
+    // 7. Update to the new password
     const newHash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
 
     await withTransaction(async (txClient) => {
@@ -495,7 +496,7 @@ const changePasswordWithCredentials = async (
             `UPDATE users
              SET password_hash = $1,
                  password_changed_at = NOW(),
-                 must_change_password = FALSE,
+                 must_change_password = FALSE, -- Unlocks the account
                  failed_login_attempts = 0,
                  locked_until = NULL,
                  updated_at = NOW()
@@ -503,6 +504,7 @@ const changePasswordWithCredentials = async (
             [newHash, user.id]
         );
 
+        // Revoke all active sessions so they are forced to log in with the new password
         await txClient.query(
             `UPDATE refresh_tokens
              SET revoked_at = NOW()

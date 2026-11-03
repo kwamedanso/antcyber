@@ -1,6 +1,9 @@
 /* pages/staff/styles/CreateStaff.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ============================================================================
+   PAGE LAYOUT
+   ============================================================================ */
 .pageWrapper {
     min-height: 100vh;
     background-color: #fdfdfd;
@@ -43,7 +46,9 @@
     overflow: hidden;
 }
 
-/* Header */
+/* ============================================================================
+   HEADER & TABS
+   ============================================================================ */
 .header {
     display: flex;
     align-items: flex-start;
@@ -67,6 +72,7 @@
 .title {
     font-size: 1.75rem;
     font-weight: 700;
+    letter-spacing: -0.025em;
     margin-bottom: 0.25rem;
 }
 
@@ -75,7 +81,6 @@
     font-size: 0.875rem;
 }
 
-/* Tabs */
 .tabsContainer {
     display: flex;
     border-bottom: 1px solid #e5e7eb;
@@ -107,7 +112,9 @@
     background-color: #ffffff;
 }
 
-/* Form Layout */
+/* ============================================================================
+   FORM LAYOUT
+   ============================================================================ */
 .tabContent {
     padding: 2rem;
     display: flex;
@@ -142,7 +149,15 @@
     font-weight: 500;
 }
 
-/* Dynamic Lists */
+.helperText {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: -0.5rem;
+}
+
+/* ============================================================================
+   DYNAMIC LISTS (Contacts, Education, etc.)
+   ============================================================================ */
 .dynamicSectionHeader {
     display: flex;
     justify-content: space-between;
@@ -174,8 +189,7 @@
     color: #1a1a1a;
 }
 
-.dynamicRow,
-.dynamicGrid {
+.dynamicRow {
     display: flex;
     gap: 0.5rem;
     align-items: center;
@@ -185,6 +199,7 @@
     display: grid;
     grid-template-columns: 140px repeat(3, 1fr) 40px;
     gap: 0.5rem;
+    align-items: center;
 }
 
 .inlineSelect,
@@ -194,6 +209,8 @@
     border-radius: 0.375rem;
     font-size: 0.8125rem;
     outline: none;
+    background-color: #ffffff;
+    color: #1a1a1a;
 }
 
 .inlineSelect:focus,
@@ -218,7 +235,9 @@
     background: #fee2e2;
 }
 
-/* Roles & Permissions (Tab 2) */
+/* ============================================================================
+   TAB 2: ROLES & PERMISSIONS
+   ============================================================================ */
 .rolesGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -238,6 +257,7 @@
     background: #ffffff;
     font-size: 0.8125rem;
     font-weight: 500;
+    user-select: none;
 }
 
 .roleCard:hover,
@@ -266,6 +286,7 @@
     background: #ffffff;
     color: #ffffff;
     flex-shrink: 0;
+    transition: all 0.2s;
 }
 
 .roleCardActive .checkboxIndicator,
@@ -280,17 +301,12 @@
     margin: 1rem 0;
 }
 
-.helperText {
-    font-size: 0.75rem;
-    color: #6b7280;
-    margin-top: -0.5rem;
-}
-
 /* Accordion for Permissions */
 .accordion {
     border: 1px solid #e5e7eb;
     border-radius: 0.5rem;
     overflow: hidden;
+    background-color: #ffffff;
 }
 
 .accordionItem {
@@ -303,30 +319,59 @@
 
 .accordionHeader {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9fafb;
+    padding: 0.75rem 1rem;
+}
+
+.expandBtn {
+    display: flex;
     align-items: center;
     gap: 0.5rem;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background: #f9fafb;
+    background: none;
     border: none;
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 700;
     color: #1a1a1a;
     cursor: pointer;
-    text-align: left;
+    text-transform: capitalize;
+}
+
+.selectAllLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #4b5563;
+    cursor: pointer;
+}
+
+.selectAllLabel input[type="checkbox"] {
+    accent-color: #b8cc85;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }
 
 .accordionBody {
-    padding: 1rem;
+    padding: 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .resourceGroup {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
+}
+
+.resourceHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .resourceName {
@@ -334,6 +379,21 @@
     font-weight: 700;
     color: #6b7280;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.selectGroupBtn {
+    background: none;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #b8cc85;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.selectGroupBtn:hover {
+    color: #1a1a1a;
 }
 
 .permissionsGrid {
@@ -346,9 +406,12 @@
     padding: 2rem;
     text-align: center;
     color: #6b7280;
+    font-style: italic;
 }
 
-/* Actions */
+/* ============================================================================
+   FOOTER ACTIONS
+   ============================================================================ */
 .actions {
     display: flex;
     justify-content: flex-end;
@@ -374,7 +437,9 @@
     background: #f3f4f6;
 }
 
-/* Responsive */
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
 @media (max-width: 768px) {
 
     .row,

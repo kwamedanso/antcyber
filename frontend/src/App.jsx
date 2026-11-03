@@ -47,6 +47,7 @@ const EditStaff = lazy(() => import("./pages/private/EditStaff"));
 const Staff = lazy(() => import("./pages/private/Staff"));
 const ViewStaff = lazy(() => import("./pages/private/ViewStaff"));
 const Setup = lazy(() => import("./pages/public/Setup"));
+const ForcedChangePassword = lazy(() => import("./pages/public/ForcedChangePassword"));
 
 // 1. Create a Root Layout to wrap the application and inject ScrollRestoration
 function RootLayout() {
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
       {
         path: "forgot-password",
         element: <ForgotPassword />,
+      },
+      {
+        path: "/change-default-password",
+        element: <ForcedChangePassword />
       },
 
       // protected routes

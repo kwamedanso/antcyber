@@ -325,6 +325,14 @@ const getUserAccessDetails = async (userId) => {
     };
 };
 
+const getRolePermissions = async (roleId) => {
+    const result = await query(
+        `SELECT permission_id FROM role_permissions WHERE role_id = $1`,
+        [roleId]
+    );
+    return result.rows.map(r => r.permission_id);
+};
+
 module.exports = {
     getAllPermissions,
     getAllRoles,
@@ -335,5 +343,6 @@ module.exports = {
     updateRolePermissions,
     getUserAccessDetails,
     getUserPermissions,
-    getUserRoles
+    getUserRoles,
+    getRolePermissions
 };

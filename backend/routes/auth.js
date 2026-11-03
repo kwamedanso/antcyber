@@ -8,12 +8,16 @@ const { setupSuperAdmin } = require('../controllers/auth/setup');
 const {login} = require("../controllers/auth/login")
 const {refresh} = require("../controllers/auth/refreshToken")
 const { getUserProfile } = require('../controllers/auth/getUserProfile.js');
+const { forcedChangePasswordController } = require('../controllers/auth/forcedChangePassword');
+
 
 const {logout} = require("../controllers/auth/logout")
 // const register = require("../controllers/auth/register")
 
 // Public routes
 router.post('/login', login);
+router.post('/force-change-password', forcedChangePasswordController);
+
 // router.post('/register', register);
 
 // Protected routes

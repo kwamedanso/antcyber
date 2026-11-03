@@ -13,6 +13,7 @@ import DatePickerInput from '../../components/ui/DatePickerInput';
 import Button from '../../components/ui/Button';
 import { usePrivateQuery } from '../../hooks/usePrivateQuery';
 import { usePrivateMutation } from '../../hooks/usePrivateMutation';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import styles from './styles/EditStaff.module.css';
 
 // ----------------------------------------------------------------------------
@@ -58,6 +59,7 @@ const EDU_TYPES = [
 const EditStaff = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
   
   const [activeTab, setActiveTab] = useState('details');
   const [errors, setErrors] = useState({});
@@ -65,11 +67,14 @@ const EditStaff = () => {
   
   const [formData, setFormData] = useState({
     first_name: '', middle_name: '', last_name: '',
-    title: '', gender: '', date_of_birth: '', 
+    title: '', rank: '', gender: '', date_of_birth: '', 
     employment_date: '', employment_status: 'active',
     contacts: [], identifications: [], addresses: [], education: [],
     role_ids: [], permission_ids: [],
   });
+
+  // Store the permissions each role provides
+  const [rolePermissionMap, setRolePermissionMap] = useState({});
 
   useEffect(() => { document.title = 'Edit Staff | Ant Cyber Portal'; }, []);
 
@@ -89,14 +94,12 @@ const EditStaff = () => {
   );
   const userAccess = accessResponse?.data || accessResponse;
 
-  // Fetch ALL available roles and permissions for the checkboxes
   const { data: rolesResponse } = usePrivateQuery(['roles'], '/api/rbac/roles', {}, { staleTime: Infinity });
   const roles = rolesResponse?.data || [];
 
   const { data: permsResponse, isLoading: permsLoading } = usePrivateQuery(['permissions'], '/api/rbac/permissions', {}, { staleTime: Infinity });
   const permissions = permsResponse?.data || [];
 
-  // Group permissions by Module -> Resource
   const groupedPermissions = useMemo(() => {
     const groups = {};
     permissions.forEach(p => {
@@ -115,7 +118,7 @@ const EditStaff = () => {
   // Initialize Form State
   // --------------------------------------------------------------------------
   useEffect(() => {
-    if (staff && userAccess && !isInitialized) {
+    if (staff && userAccess && !isInitialized && roles.length > 0) {
       const otherContacts = staff.contacts?.filter(c => !(c.contact_type === 'email' && c.is_primary)) || [];
 
       setFormData({
@@ -132,10 +135,26 @@ const EditStaff = () => {
         identifications: staff.identifications || [],
         addresses: staff.addresses || [],
         education: staff.education || [],
-        
         role_ids: userAccess.role_ids || [],
-        permission_ids: userAccess.permission_ids || [], // Array of UUIDs
+        permission_ids: userAccess.permission_ids || [],
       });
+
+      // Pre-fetch permissions for already assigned roles
+      const fetchRolePerms = async () => {
+        const map = {};
+        for (const role of roles) {
+          if (userAccess.role_ids.includes(role.id)) {
+            try {
+              const res = await axiosPrivate.get(`/api/rbac/roles/${role.id}/permissions`);
+              map[role.id] = res.data.data;
+            } catch (e) {
+              console.error("Failed to fetch role perms", e);
+            }
+          }
+        }
+        setRolePermissionMap(map);
+      };
+      fetchRolePerms();
 
       // Auto-expand modules that have selected permissions
       const modulesWithSelections = {};
@@ -150,7 +169,7 @@ const EditStaff = () => {
 
       setIsInitialized(true);
     }
-  }, [staff, userAccess, permissions, isInitialized]);
+  }, [staff, userAccess, roles, permissions, isInitialized, axiosPrivate]);
 
   // --------------------------------------------------------------------------
   // Mutations
@@ -190,8 +209,45 @@ const EditStaff = () => {
   };
 
   // --- Permission Selection Logic ---
-  const toggleModule = (moduleName) => {
-    setExpandedModules(prev => ({ ...prev, [moduleName]: !prev[moduleName] }));
+  const handleRoleToggle = async (roleId, isChecked) => {
+    // 1. Update selected roles
+    setFormData(prev => {
+      const newRoleIds = isChecked 
+        ? [...prev.role_ids, roleId]
+        : prev.role_ids.filter(id => id !== roleId);
+      return { ...prev, role_ids: newRoleIds };
+    });
+
+    // 2. Fetch and map permissions if checking a new role
+    if (isChecked) {
+      try {
+        const res = await axiosPrivate.get(`/api/rbac/roles/${roleId}/permissions`);
+        const rolePerms = res.data.data;
+        
+        setRolePermissionMap(prev => ({ ...prev, [roleId]: rolePerms }));
+        
+        // Auto-check these permissions
+        setFormData(prev => {
+          const newPerms = new Set([...prev.permission_ids, ...rolePerms]);
+          return { ...prev, permission_ids: Array.from(newPerms) };
+        });
+      } catch (err) {
+        toast.error('Failed to load role permissions');
+      }
+    } else {
+      // Remove permissions if no other selected role grants them
+      const rolePerms = rolePermissionMap[roleId] || [];
+      const otherRolesPerms = formData.role_ids
+        .filter(id => id !== roleId)
+        .flatMap(id => rolePermissionMap[id] || []);
+        
+      setFormData(prev => {
+        const newPerms = prev.permission_ids.filter(id => 
+          !rolePerms.includes(id) || otherRolesPerms.includes(id)
+        );
+        return { ...prev, permission_ids: newPerms };
+      });
+    }
   };
 
   const handlePermissionToggle = (permId) => {
@@ -202,6 +258,10 @@ const EditStaff = () => {
         permission_ids: isSel ? prev.permission_ids.filter(id => id !== permId) : [...prev.permission_ids, permId]
       };
     });
+  };
+
+  const toggleModule = (moduleName) => {
+    setExpandedModules(prev => ({ ...prev, [moduleName]: !prev[moduleName] }));
   };
 
   const handleGroupToggle = (groupPermissions) => {
@@ -246,10 +306,38 @@ const EditStaff = () => {
     }
 
     setErrors({});
+
+    // 3. Build the permission overrides object for the backend
+    // Collect all permissions granted by the selected roles
+    const inheritedPerms = new Set(
+      formData.role_ids.flatMap(roleId => rolePermissionMap[roleId] || [])
+    );
+
+    const granted = [];
+    const denied = [];
+
+    // Check what the user selected vs what the roles provide
+    for (const permId of formData.permission_ids) {
+      if (!inheritedPerms.has(permId)) {
+        granted.push(permId); // Added manually by admin
+      }
+    }
+
+    for (const inheritedPermId of inheritedPerms) {
+      if (!formData.permission_ids.includes(inheritedPermId)) {
+        denied.push(inheritedPermId); // Unchecked by admin
+      }
+    }
+
+    const payload = {
+      ...formData,
+      permission_overrides: { granted, denied }
+    };
+
     updateStaff({
       url: `/api/staff/${id}`,
       method: 'PATCH',
-      data: formData,
+      data: payload,
     });
   };
 
@@ -328,7 +416,6 @@ const EditStaff = () => {
           <form onSubmit={handleSubmit}>
             {activeTab === 'details' && (
               <motion.div className={styles.tabContent} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                {/* ... (Keep all your existing details inputs exactly as they are) ... */}
                 <h3 className={styles.sectionTitle}>Basic Information</h3>
                 <div className={styles.row}>
                   <div className={styles.inputGroup}><TextInput label="First Name *" value={formData.first_name} onChange={e => setFormData(p => ({...p, first_name: e.target.value}))} error={errors.first_name} /></div>
@@ -415,10 +502,7 @@ const EditStaff = () => {
                 <div className={styles.rolesGrid}>
                   {roles.map(role => (
                     <label key={role.id} className={`${styles.roleCard} ${formData.role_ids.includes(role.id) ? styles.roleCardActive : ''}`}>
-                      <input type="checkbox" checked={formData.role_ids.includes(role.id)} onChange={(e) => {
-                        if (e.target.checked) setFormData(p => ({ ...p, role_ids: [...p.role_ids, role.id] }));
-                        else setFormData(p => ({ ...p, role_ids: p.role_ids.filter(id => id !== role.id) }));
-                      }} className={styles.hiddenCheckbox} />
+                      <input type="checkbox" checked={formData.role_ids.includes(role.id)} onChange={(e) => handleRoleToggle(role.id, e.target.checked)} className={styles.hiddenCheckbox} />
                       <div className={styles.checkboxIndicator}>{formData.role_ids.includes(role.id) && <FiCheck size={12} />}</div>
                       <span>{role.display_name}</span>
                     </label>
@@ -428,6 +512,8 @@ const EditStaff = () => {
                 <div className={styles.divider} />
 
                 <h3 className={styles.sectionTitle}>Direct Permissions</h3>
+                <p className={styles.helperText}>Grant specific permissions beyond what the roles provide, or uncheck to deny.</p>
+                
                 {permsLoading ? (
                   <div className={styles.loading}>Loading permissions...</div>
                 ) : (
