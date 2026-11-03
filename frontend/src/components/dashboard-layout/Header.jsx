@@ -1,18 +1,33 @@
+// components/layout/Header.jsx
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { FiBell, FiChevronDown } from 'react-icons/fi';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FiChevronDown } from 'react-icons/fi';
 import { BsLayoutSidebarInset, BsLayoutSidebarInsetReverse } from "react-icons/bs";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import useOutsideClick from './useOutsideClick';
 import ProfileMenu from './ProfileMenu';
+import NotificationMenu from './NotificationMenu'; // <-- Import
 import styles from './styles/Header.module.css';
+import useAuth from '../../hooks/useAuth';
+import { useScreenSize } from '../../hooks/useScreenSize';
+
+const getInitials = (first, last) => {
+  const f = (first || '').trim();
+  const l = (last || '').trim();
+  const a = f[0]?.toUpperCase() || '';
+  const b = l[0]?.toUpperCase() || '';
+  return (a + b) || '?';
+};
 
 const Header = ({ isCollapsed, setCollapsed, toggleMobileSidebar }) => {
+  const { auth } = useAuth();
+  const user = auth?.user;
+  const initials = getInitials(user?.first_name, user?.last_name);
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
+  const { isMobile } = useScreenSize();
 
   const [profileOpen, setProfileOpen] = useState(false);
-  
   const headerProfileRef = useOutsideClick(() => setProfileOpen(false));
 
   return (
@@ -37,7 +52,7 @@ const Header = ({ isCollapsed, setCollapsed, toggleMobileSidebar }) => {
         </button>
 
         {/* Breadcrumbs */}
-        <nav className={styles.breadcrumbNav}>
+        {!isMobile && <nav className={styles.breadcrumbNav}>
           <Link to="/admin/dashboard" className={styles.breadcrumbHomeLink}>
             <MdOutlineSpaceDashboard size={18} />
           </Link>
@@ -71,15 +86,14 @@ const Header = ({ isCollapsed, setCollapsed, toggleMobileSidebar }) => {
                Web Page
              </span>
           )}
-        </nav>
+        </nav>}
       </div>
 
       {/* Header Right Section */}
       <div className={styles.rightSection}>
-        <button className={styles.notificationButton}>
-          <FiBell size={20} />
-          <span className={styles.notificationBadge} />
-        </button>
+        
+        {/* Replaced static button with the new Notification Menu */}
+        <NotificationMenu />
         
         <div className={styles.divider} />
 
@@ -88,12 +102,10 @@ const Header = ({ isCollapsed, setCollapsed, toggleMobileSidebar }) => {
             onClick={() => setProfileOpen(!profileOpen)}
             className={styles.profileButton}
           >
-            <img 
-              src="https://i.pravatar.cc/150?u=sandra" 
-              className={styles.avatar} 
-              alt="Avatar" 
-            />
-            <span className={styles.userName}>Sandra</span>
+            <div className={styles.profileAvatar} aria-hidden="true">
+                {initials}
+              </div>          
+            <span className={styles.userName}>{user?.first_name}</span>
             <FiChevronDown size={14} className={styles.chevronIcon} />
           </button>
           

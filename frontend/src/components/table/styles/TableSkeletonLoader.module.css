@@ -1,0 +1,57 @@
+/* Shimmer effect for skeleton loading cells */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeletonBox {
+  display: block;
+  height: 1rem;
+  border-radius: 0.375rem;
+  background: linear-gradient(
+    90deg,
+    #f3f4f6 25%,
+    #e5e7eb 50%,
+    #f3f4f6 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
+/* Specific shape for circular/square checkboxes */
+.skeletonCheckbox {
+  display: block;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(
+    90deg,
+    #f3f4f6 25%,
+    #e5e7eb 50%,
+    #f3f4f6 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite linear;
+  margin: 0 auto;
+}
+
+/* Specific shape for row actions (three dots/icon buttons) */
+.skeletonActions {
+  display: block;
+  height: 1rem;
+  width: 2rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(
+    90deg,
+    #f3f4f6 25%,
+    #e5e7eb 50%,
+    #f3f4f6 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite linear;
+  margin-left: auto;
+}

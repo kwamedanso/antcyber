@@ -1,0 +1,129 @@
+.timePickerContainer {
+    position: relative;
+    width: 100%;
+}
+
+.inputWrapper {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+
+.input {
+    width: 100%;
+    padding: 10px 40px 10px 12px;
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    color: #000000;
+    border-radius: 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #000000;
+}
+
+.clockIcon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666666;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+
+/* Dropdown Window Menu */
+.timeDropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 250;
+    width: 240px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    /* Crisp sharp borders */
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.columnWrapper {
+    display: flex;
+    gap: 4px;
+}
+
+.column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.columnShort {
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.columnHeader {
+    font-size: 11px;
+    text-align: center;
+    color: #999999;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.list {
+    max-height: 160px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Action button items inside columns */
+.timeButton {
+    background: none;
+    border: none;
+    padding: 6px 0;
+    font-size: 13px;
+    color: #1a1a1a;
+    cursor: pointer;
+    border-radius: 3px;
+    text-align: center;
+    transition: background 0.1s ease;
+}
+
+.timeButton:hover {
+    background-color: #f5f5f5;
+}
+
+/* Active Highlight Style: Solid Minimalist Block */
+.activeItem {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Custom minimal scrollbar sizes for tight lists */
+.list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background: #eeeeee;
+    border-radius: 2px;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+    background: #cccccc;
+}

@@ -1,0 +1,366 @@
+/* pages/reports/styles/CreateReport.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.pageWrapper {
+    min-height: 100vh;
+    background-color: #fdfdfd;
+    font-family: 'Inter', sans-serif;
+    color: #1a1a1a;
+    padding: 2rem 1.5rem 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pageContainer {
+    width: 100%;
+    /* max-width: 860px; */
+}
+
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: none;
+    border: none;
+    padding: 0.25rem 0;
+    margin-bottom: 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.backButton:hover {
+    color: #1a1a1a;
+}
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 1.25rem;
+    padding: 2.25rem 2rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+}
+
+/* Header & Reference Box */
+.header {
+    margin-bottom: 2rem;
+}
+
+.headerTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.referenceBox {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: #f9fafb;
+    border: 1px dashed #d1d5db;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.refIcon {
+    color: #9ca3af;
+}
+
+.refLabel {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.refValue {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    font-family: monospace;
+}
+
+/* Form Grid Layout */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    width: 100%;
+}
+
+.fieldLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #374151;
+    letter-spacing: 0.01em;
+}
+
+.required {
+    color: #e11d48;
+    font-weight: 700;
+}
+
+.errorText {
+    font-size: 0.75rem;
+    color: #e11d48;
+    font-weight: 500;
+    margin-top: 0.125rem;
+}
+
+/* Dropzone */
+.dropzone {
+    border: 2px dashed #d1d5db;
+    border-radius: 0.75rem;
+    padding: 2rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f9fafb;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.dropzone:hover,
+.dropzoneActive {
+    background-color: #f1f5e9;
+    border-color: #b8cc85;
+}
+
+.fileInput {
+    display: none;
+}
+
+.dropzoneContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.uploadIconWrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 0.5rem;
+}
+
+.dropzoneTitle {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.dropzoneSub {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+/* File List */
+.fileList {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fileItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+}
+
+.fileIcon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4b5563;
+    flex-shrink: 0;
+}
+
+.fileDetails {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.fileName {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fileSize {
+    font-size: 0.6875rem;
+    color: #6b7280;
+}
+
+.removeFileBtn {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.removeFileBtn:hover {
+    color: #e11d48;
+    background-color: #ffe4e6;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.secondaryButton {
+    padding: 0.75rem 1.25rem;
+    background-color: #f3f4f6;
+    color: #1a1a1a;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.secondaryButton:hover:not(:disabled) {
+    background-color: #e5e7eb;
+}
+
+.secondaryButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .pageContainer{
+        padding: 0;
+    }
+    
+    .card {
+        padding: 1.75rem 1.25rem;
+        border-radius: 1rem;
+    }
+
+    .headerTop {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .row {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        flex-direction: column-reverse;
+    }
+
+    .actions>* {
+        width: 100%;
+    }
+}
+
+
+.splitActions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.draftButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background-color: #f3f4f6;
+    color: #1a1a1a;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.draftButton:hover:not(:disabled) {
+    background-color: #e5e7eb;
+}
+
+.draftButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+    .splitActions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .splitActions>* {
+        width: 100%;
+        justify-content: center;
+    }
+}

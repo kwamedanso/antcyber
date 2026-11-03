@@ -1,0 +1,223 @@
+/* components/ui/KPICard/KPICard.module.css */
+
+/* Base KPI Card */
+.kpiCard {
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid #d3d3d3;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+/* Color Variants - Accent Line on left */
+.colorSuccess .accentLine {
+    background-color: #10b981;
+}
+
+.colorWarning .accentLine {
+    background-color: #f59e0b;
+}
+
+.colorDanger .accentLine {
+    background-color: #e11d48;
+}
+
+.colorInfo .accentLine {
+    background-color: #0284c7;
+}
+
+.accentLine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+}
+
+/* Size Variants */
+.variantCompact {
+    padding: 14px 16px;
+}
+
+.variantCompact .kpiValue {
+    font-size: 1.35rem;
+}
+
+.variantCompact .kpiIconBg {
+    width: 28px;
+    height: 28px;
+}
+
+.variantLarge {
+    padding: 24px;
+}
+
+.variantLarge .kpiValue {
+    font-size: 2.25rem;
+}
+
+.variantLarge .kpiLabel {
+    font-size: 14px;
+}
+
+/* Card Header */
+.kpiCardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.kpiLabel {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #71717a;
+}
+
+.kpiIconBg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: #f4f4f5;
+    border-radius: 8px;
+    color: #393939;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.kpiCard:hover .kpiIconBg {
+    background-color: #e5e5e5;
+}
+
+/* Value Display */
+.kpiValueWrapper {
+    margin-bottom: 8px;
+}
+
+.kpiValue {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #000000;
+    line-height: 1.2;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+/* Footer Section */
+.kpiFooter {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.kpiTrend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #71717a;
+    flex-wrap: wrap;
+}
+
+.trendValue {
+    font-weight: 500;
+}
+
+.trendPositive {
+    color: #10b981;
+}
+
+.trendNegative {
+    color: #e11d48;
+}
+
+.trendNeutral {
+    color: #71717a;
+}
+
+.trendLabel {
+    color: #71717a;
+}
+
+/* Extra Content Area */
+.kpiExtraContent {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #71717a;
+}
+
+/* Interactive States */
+.interactive {
+    cursor: pointer;
+}
+
+.interactive:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.interactive:active {
+    transform: translateY(0px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .kpiCard {
+        padding: 16px;
+    }
+
+    .kpiValue {
+        font-size: 1.65rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .kpiCard {
+        padding: 14px;
+    }
+
+    .kpiValue {
+        font-size: 1.5rem;
+    }
+
+    .variantLarge .kpiValue {
+        font-size: 1.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .kpiCard {
+        padding: 12px;
+    }
+
+    .kpiValue {
+        font-size: 1.35rem;
+    }
+
+    .kpiIconBg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .variantLarge {
+        padding: 16px;
+    }
+
+    .variantLarge .kpiValue {
+        font-size: 1.65rem;
+    }
+}
+
+/* Hover Effects for Non-interactive Cards */
+.kpiCard:not(.interactive):hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}

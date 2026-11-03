@@ -1,0 +1,244 @@
+/* components/Modal/Modal.module.css */
+
+/* ---------- Root / backdrop ---------- */
+.root {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    /* Positioning handled per position variant */
+}
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    /* slate-900 @ 55% */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* ---------- Panel ---------- */
+.panel {
+    position: relative;
+    background: var(--modal-bg, #ffffff);
+    color: var(--modal-fg, #0f172a);
+    box-shadow:
+        0 10px 25px -5px rgba(0, 0, 0, 0.25),
+        0 20px 40px -10px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 12px;
+    /* Sensible default maximums */
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 2rem);
+    /* Animations are driven by Framer Motion; keep GPU-friendly */
+    will-change: transform, opacity;
+}
+
+/* ---------- Header ---------- */
+.header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+}
+
+.subtitle {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: rgba(15, 23, 42, 0.65);
+}
+
+.closeBtn {
+    flex-shrink: 0;
+    appearance: none;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    padding: 6px;
+    cursor: pointer;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+
+.closeBtn:hover {
+    background: rgba(15, 23, 42, 0.08);
+}
+
+.closeBtn:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* ---------- Body / Footer ---------- */
+.body {
+    padding: 16px 20px;
+    overflow: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 20px;
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   POSITION VARIANTS
+   ========================================================= */
+
+/* ---------- Centered ---------- */
+.root.center {
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.root.center .panel {
+    width: min(var(--modal-width, 560px), calc(100vw - 2rem));
+    max-height: calc(100vh - 2rem);
+}
+
+.root.center.fullWidth .panel {
+    width: calc(100vw - 2rem);
+}
+
+.root.center.fullHeight .panel {
+    height: calc(100vh - 2rem);
+    max-height: none;
+}
+
+/* ---------- Right drawer ---------- */
+.root.right {
+    align-items: stretch;
+    justify-content: flex-end;
+}
+
+.root.right .panel {
+    width: min(var(--modal-width, 420px), 100vw);
+    height: auto;
+    max-height: 100vh;
+    border-radius: 12px 0 0 12px;
+    margin: 0;
+}
+
+.root.right.fullWidth .panel {
+    width: 100vw;
+}
+
+.root.right.fullHeight .panel {
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+}
+
+/* ---------- Left drawer ---------- */
+.root.left {
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.root.left .panel {
+    width: min(var(--modal-width, 420px), 100vw);
+    max-height: 100vh;
+    border-radius: 0 12px 12px 0;
+}
+
+.root.left.fullWidth .panel {
+    width: 100vw;
+}
+
+.root.left.fullHeight .panel {
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+}
+
+/* ---------- Top sheet ---------- */
+.root.top {
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.root.top .panel {
+    width: min(var(--modal-width, 640px), calc(100vw - 2rem));
+    max-height: calc(100vh - 2rem);
+    border-radius: 0 0 12px 12px;
+    margin-top: 0;
+}
+
+.root.top.fullWidth .panel {
+    width: 100vw;
+    border-radius: 0;
+}
+
+.root.top.fullHeight .panel {
+    height: calc(100vh - 1rem);
+    max-height: none;
+}
+
+/* ---------- Bottom sheet ---------- */
+.root.bottom {
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.root.bottom .panel {
+    width: min(var(--modal-width, 640px), calc(100vw - 2rem));
+    max-height: calc(100vh - 2rem);
+    border-radius: 12px 12px 0 0;
+}
+
+.root.bottom.fullWidth .panel {
+    width: 100vw;
+    border-radius: 0;
+}
+
+.root.bottom.fullHeight .panel {
+    height: calc(100vh - 1rem);
+    max-height: none;
+}
+
+/* =========================================================
+   RESPONSIVE — small screens
+   On phones drawers/top/bottom become nearly full-size.
+   ========================================================= */
+@media (max-width: 640px) {
+    .root.center {
+        padding: 0.5rem;
+    }
+
+    .root.center .panel {
+        width: calc(100vw - 1rem);
+        max-height: calc(100vh - 1rem);
+    }
+
+    .root.right .panel,
+    .root.left .panel {
+        width: min(var(--modal-width, 420px), 92vw);
+    }
+
+    .root.top .panel,
+    .root.bottom .panel {
+        width: calc(100vw - 1rem);
+    }
+}

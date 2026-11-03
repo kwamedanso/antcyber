@@ -1,0 +1,77 @@
+.gridWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.gridHeader {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.25rem 0;
+    margin-bottom: -0.5rem;
+}
+
+.selectAllLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.gridItemWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    isolation: isolate; 
+    height: 100%;
+}
+
+.gridItemCheckbox {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    padding: 0;
+    display: flex;
+    box-shadow: 0 0 0 2px #fff;
+}
+
+.checkbox {
+    width: 1.125rem;
+    height: 1.125rem;
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+.gridItemActions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #fff;
+}
+
+.emptyState {
+    padding: 3rem;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+    grid-column: 1 / -1;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    border: 1px dashed #d1d5db;
+}

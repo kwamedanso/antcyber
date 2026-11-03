@@ -1,0 +1,62 @@
+.wrapperContainer {
+    display: flex;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin-bottom: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.layoutTop {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.layoutLeft {
+    flex-direction: row;
+    align-items: center;
+}
+
+.mainLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+}
+
+.layoutLeft .mainLabel {
+    margin-bottom: 0;
+    margin-right: 16px;
+    min-width: 120px;
+    text-align: left;
+}
+
+.inputsGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Compact space between date block and time block */
+    flex: 1;
+    width: 100%;
+}
+
+.dateSegment {
+    flex: 3;
+    /* Gives the date component slightly more width priority */
+}
+
+.timeSegment {
+    flex: 2;
+    /* Keeps the time picker box neat and proportional */
+}
+
+/* Clear overrides for any leakage of margin constraints from child wrappers */
+.dateSegment :global(div),
+.timeSegment :global(div) {
+    margin-bottom: 0 !important;
+}
+
+.errorMessage {
+    font-size: 12px;
+    color: #666666;
+    margin-top: 4px;
+}

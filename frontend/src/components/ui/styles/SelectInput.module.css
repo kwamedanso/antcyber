@@ -1,0 +1,43 @@
+.selectContainer {
+    position: relative;
+    width: 100%;
+}
+
+.select {
+    width: 100%;
+    padding: 10px 32px 10px 12px;
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    color: #000000;
+    border-radius: 4px;
+    appearance: none;
+    /* Removes native arrow */
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+/* Custom Minimalist Minimal Arrow */
+.selectContainer::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #000000;
+    pointer-events: none;
+}
+
+.select:focus {
+    outline: none;
+    border-color: #000000;
+}
+
+.select:disabled {
+    background-color: #f5f5f5;
+    color: #999999;
+    cursor: not-allowed;
+}

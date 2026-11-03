@@ -1,4 +1,25 @@
+/* components/dashboard-layout/styles/NavItem.module.css */
+
 .navItemContainer {
+  /* ---- Ant Cyber color tokens ---- */
+  --ac-sage: var(--app-sage, #c1d195);
+  --ac-teal: var(--app-teal, #779296);
+  --ac-emerald: var(--app-emerald, #143b25);
+  --ac-gray: var(--app-gray, #aab3b7);
+
+  /* ---- derived tokens ---- */
+  --sb-bg: var(--app-surface, #ffffff);
+  --sb-text: var(--app-text, #1f2a2e);
+  --sb-text-muted: var(--ac-gray);
+  --sb-text-subtle: color-mix(in srgb, var(--ac-teal) 70%, #1f2a2e);
+  --sb-hover: color-mix(in srgb, var(--ac-sage) 35%, transparent);
+  --sb-hover-text: var(--ac-teal);
+  --sb-accent: var(--ac-teal);
+  --sb-accent-soft: color-mix(in srgb, var(--ac-sage) 55%, transparent);
+  --sb-border: color-mix(in srgb, var(--ac-gray) 35%, transparent);
+  --sb-border-strong: color-mix(in srgb, var(--ac-gray) 55%, transparent);
+  --sb-kbd-bg: color-mix(in srgb, var(--ac-sage) 20%, transparent);
+
   position: relative;
   margin-bottom: 0.25rem;
 }
@@ -9,6 +30,9 @@
   text-decoration: none;
 }
 
+/* ============================================================
+   Main row
+   ============================================================ */
 .navItemContent {
   display: flex;
   align-items: center;
@@ -20,17 +44,18 @@
 }
 
 .default {
-  color: #6b7280;
+  color: var(--sb-text-subtle);
 }
 
 .hoveredOrOpen {
-  background-color: #f3f4f6;
-  color: #111827;
+  background-color: var(--sb-hover);
+  color: var(--sb-hover-text);
 }
 
 .active {
-  background-color: #eef2ff;
-  color: #4f46e5;
+  background-color: var(--sb-accent-soft);
+  color: var(--sb-accent);
+  font-weight: 600;
 }
 
 .iconWrapper {
@@ -58,44 +83,27 @@
 .shortcut {
   font-size: 0.625rem;
   line-height: 0.875rem;
-  color: #9ca3af;
+  color: var(--sb-text-muted);
   font-family: monospace;
-  background-color: #f9fafb;
+  background-color: var(--sb-kbd-bg);
   padding: 0 0.25rem;
   border-radius: 0.25rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--sb-border-strong);
 }
 
 .chevronWrapper {
   display: flex;
   align-items: center;
-  color: #9ca3af;
+  color: var(--sb-text-muted);
 }
 
+/* ============================================================
+   Inline children container
+   ============================================================ */
 .childrenContainer {
-  margin-left: 2rem;
+  margin-left: 1.5rem;
+  padding-top: 0.125rem;
+  padding-bottom: 0.25rem;
+  border-left: 1px solid var(--sb-border);
   overflow: hidden;
-  border-left: 1px solid #f3f4f6;
-}
-
-.childNavLink {
-  display: block;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  transition: color 0.15s ease;
-  text-decoration: none;
-}
-
-.childNavLinkInactive {
-  color: #6b7280;
-}
-
-.childNavLinkInactive:hover {
-  color: #111827;
-}
-
-.childNavLinkActive {
-  color: #4f46e5;
-  font-weight: 500;
 }

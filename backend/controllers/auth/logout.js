@@ -1,38 +1,63 @@
-require('dotenv').config();
-const { query } = require('../../utils/database/connection');
-const { refreshTokenQueries } = require('../../utils/database/queries');
+// controllers/auth/logout.controller.js
+const authService = require('../../services/auth/auth.service.js');
 
-async function logout(req, res, next) {
-    const cookies = req.cookies;
+const REFRESH_TOKEN_COOKIE = 'refresh_token';
 
-    if (!cookies?.jwt) {
-        return res.sendStatus(204); // No content - already logged out
-    }
+const REFRESH_COOKIE_BASE_OPTIONS = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/api/auth'
+};
 
-    const refreshToken = cookies.jwt;
-
+/**
+ * POST /auth/logout
+ *
+ * Unauthenticated route — identifies the session via the refresh cookie.
+ * Works even when the access token has already expired.
+ *
+ * Body: { all?: boolean }
+ *   all=true → revoke every session for the user (logout everywhere)
+ *   default  → revoke only the session behind the current cookie
+ *
+ * The refresh cookie is always cleared, on success or failure.
+ *
+ * Response 200: { success, data: { revokedCount, revokedSessionIds } }
+ */
+const logout = async (req, res, next) => {
     try {
-        // Delete the token from database (if it exists)
-        await query(refreshTokenQueries.deleteToken, [refreshToken]);
+        const { all = false } = req.body || {};
+        const refreshToken = req.cookies?.[REFRESH_TOKEN_COOKIE] || null;
 
-        // Also delete all expired tokens for cleanup
-        await query(refreshTokenQueries.deleteExpiredTokens);
+        console.log(refreshToken)
+        // No cookie → nothing to revoke. Idempotent success.
+        if (!refreshToken) {
+            res.clearCookie(REFRESH_TOKEN_COOKIE, REFRESH_COOKIE_BASE_OPTIONS);
+            return res.status(200).json({
+                success: true,
+                data: { revokedCount: 0, revokedSessionIds: [] }
+            });
+        }
 
-    } catch (error) {
-        // Log error but still clear the cookie
-        console.error('Error during token deletion:', error);
-    } finally {
-        const isProduction = process.env.NODE_ENV === 'production';
-        // Always clear the cookie regardless of database operation success
-        res.clearCookie('jwt', {
-            httpOnly: true,
-            secure: isProduction, 
-            sameSite: isProduction ? 'None' : 'Lax', 
-            path: '/' 
+        const result = await authService.logoutByRefreshToken(refreshToken, {
+            all: Boolean(all)
         });
 
-        return res.sendStatus(204);
-    }
-}
+        res.clearCookie(REFRESH_TOKEN_COOKIE, REFRESH_COOKIE_BASE_OPTIONS);
 
-module.exports = logout;
+        return res.status(200).json({
+            success: true,
+            data: {
+                revokedCount: result.revokedCount,
+                revokedSessionIds: result.revokedSessionIds
+            }
+        });
+    } catch (error) {
+        try {
+            res.clearCookie(REFRESH_TOKEN_COOKIE, REFRESH_COOKIE_BASE_OPTIONS);
+        } catch (_) { /* ignore */ }
+        return next(error);
+    }
+};
+
+module.exports = { logout };

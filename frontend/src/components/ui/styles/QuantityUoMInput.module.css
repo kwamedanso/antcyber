@@ -1,0 +1,35 @@
+.compoundWrapper {
+    display: flex;
+    width: 100%;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.compoundWrapper:focus-within {
+    border-color: #000000;
+}
+
+.qtyInput {
+    flex: 1;
+    border: none;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #000000;
+    outline: none;
+    width: 100%;
+}
+
+.uomSelect {
+    background-color: #ffffff;
+    border: none;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #1a1a1a;
+    border-left: 1px solid #cccccc;
+    cursor: pointer;
+    outline: none;
+    font-weight: 500;
+}

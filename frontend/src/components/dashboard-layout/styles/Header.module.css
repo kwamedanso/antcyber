@@ -2,7 +2,7 @@
 .header {
   height: 4rem;
   border-bottom: 1px solid #f3f4f6;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
@@ -33,10 +33,12 @@
   padding: 0.5rem;
   border-radius: 0.5rem;
   transition: background-color 0.2s;
+  color: #59787D;
 }
 
 .mobileToggle:hover {
   background-color: #f3f4f6;
+  color: #00272C;
 }
 
 @media (min-width: 1024px) {
@@ -50,10 +52,12 @@
   border-radius: 0.5rem;
   transition: background-color 0.2s;
   display: none;
+  color: #59787D;
 }
 
 .desktopToggle:hover {
   background-color: #f3f4f6;
+  color: #00272C;
 }
 
 @media (min-width: 1024px) {
@@ -63,7 +67,7 @@
 }
 
 .icon {
-  color: #6b7280;
+  color: inherit;
 }
 
 /* Breadcrumb Navigation */
@@ -75,12 +79,12 @@
 }
 
 .breadcrumbHomeLink {
-  color: #9ca3af;
+  color: #59787D;
   transition: color 0.2s;
 }
 
 .breadcrumbHomeLink:hover {
-  color: #4b5563;
+  color: #00272C;
 }
 
 .breadcrumbSeparator {
@@ -90,32 +94,34 @@
 }
 
 .breadcrumbCurrent {
-  color: #111827;
+  color: #00272C;
   text-transform: capitalize;
+  font-weight: 600;
 }
 
 .breadcrumbInactive {
-  color: #6b7280;
+  color: #59787D;
   text-transform: capitalize;
 }
 
 .breadcrumbInactive:hover {
-  color: #111827;
+  color: #00272C;
 }
 
 .breadcrumbLink {
-  color: #6b7280;
+  color: #59787D;
   text-transform: capitalize;
   transition: color 0.2s;
 }
 
 .breadcrumbLink:hover {
-  color: #111827;
+  color: #B8CC85;
+  /* Accent hover */
 }
 
 .breadcrumbDefaultTitle {
   margin-left: 0.5rem;
-  color: #111827;
+  color: #00272C;
   font-weight: 700;
   font-size: 1.125rem;
 }
@@ -130,7 +136,7 @@
 /* Notification Button */
 .notificationButton {
   padding: 0.5rem;
-  color: #9ca3af;
+  color: #59787D;
   border-radius: 9999px;
   transition: all 0.2s;
   position: relative;
@@ -138,15 +144,17 @@
 
 .notificationButton:hover {
   background-color: #f9fafb;
+  color: #00272C;
 }
 
 .notificationBadge {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.4rem;
+  right: 0.4rem;
   width: 0.5rem;
   height: 0.5rem;
-  background-color: #f97316;
+  background-color: #B8CC85;
+  /* Accent color for notification dot */
   border: 2px solid white;
   border-radius: 9999px;
 }
@@ -155,7 +163,7 @@
 .divider {
   height: 2rem;
   width: 1px;
-  background-color: #f3f4f6;
+  background-color: #e5e7eb;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
@@ -179,18 +187,10 @@
   background-color: #f9fafb;
 }
 
-.avatar {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 9999px;
-  border: 1px solid #f3f4f6;
-  object-fit: cover;
-}
-
 .userName {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #374151;
+  color: #00272C;
   display: none;
 }
 
@@ -201,5 +201,31 @@
 }
 
 .chevronIcon {
-  color: #9ca3af;
+  color: #59787D;
+  transition: color 0.2s;
+}
+
+.profileButton:hover .chevronIcon {
+  color: #00272C;
+}
+
+/* Initials avatar */
+.profileAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #143b25;
+  background: linear-gradient(135deg, #779296 0%, #143b25 100%);
+  /* Accent color */
+  color: #eeeeee;
+  /* Dark text for contrast */
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.025em;
+  flex-shrink: 0;
+  user-select: none;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }

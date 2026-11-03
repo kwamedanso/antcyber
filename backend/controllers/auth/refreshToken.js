@@ -1,139 +1,63 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const { query } = require('../../utils/database/connection');
-const { refreshTokenQueries } = require('../../utils/database/queries');
+// controllers/auth/refresh.controller.js
+const authService = require('../../services/auth/auth.service.js');
 
-async function refreshToken(req, res, next) {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const cookies = req.cookies;
+const REFRESH_TOKEN_COOKIE = 'refresh_token';
 
+const REFRESH_COOKIE_BASE_OPTIONS = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/api/auth'
+};
 
-    if (!cookies?.jwt) return res.status(401).json({ success: false, message: "Unauthorized" });
-
-    const refreshToken = cookies.jwt;
-
+/**
+ * POST /auth/refresh
+ *
+ * Reads the refresh_token cookie, rotates it, and returns a new access token.
+ *
+ * Response 200: { success, data: { accessToken } }
+ *
+ */
+const refresh = async (req, res, next) => {
     try {
-        // First verify the token signature
-        const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        const refreshToken = req.cookies?.[REFRESH_TOKEN_COOKIE] || null;
 
-        // Get token details from database
-        const userResult = await query(refreshTokenQueries.findTokenDetails, [refreshToken]);
-        const tokenDetails = userResult.rows[0];
+        console.log(refreshToken);
+        console.log(req.cookies);
+        // return
 
 
-        if (!tokenDetails) {
-            // Token is valid but not in DB - possible theft!
-            await query(refreshTokenQueries.deleteAllTokensByUserId, [decoded.id]);
-            return res.status(403).clearCookie('jwt', {
-                httpOnly: true,
-                secure: isProduction,
-                sameSite: isProduction ? 'None' : 'Lax',
-                path: '/'
-            }).json({
+        if (!refreshToken) {
+            return res.status(401).json({
                 success: false,
-                message: "Token revoked"
+                code: 'NO_REFRESH_TOKEN',
+                message: 'No refresh token provided. Please log in.'
             });
         }
 
-        if (tokenDetails.user_id !== decoded.id) {
-            await query(refreshTokenQueries.deleteAllTokensByUserId, [decoded.id]);
-            return res.status(403).clearCookie('jwt', {
-                httpOnly: true,
-                secure: isProduction,
-                sameSite: isProduction ? 'None' : 'Lax',
-                path: '/'
-            }).json({
-                success: false,
-                message: "Token revoked"
-            });
-        }
+        const result = await authService.refreshAccessToken(refreshToken);
 
-        // Calculate if we should rotate the refresh token (sliding window)
-        const now = new Date();
-        const tokenAge = now - tokenDetails.created_at;
-        const tokenLifetime = tokenDetails.expires_at - tokenDetails.created_at;
-        const tokenAgePercentage = (tokenAge / tokenLifetime) * 100;
+        const cookieMaxAge = new Date(result.refreshTokenExpiresAt).getTime() - Date.now();
 
-        // Determine rememberMe based on original token lifetime
-        const originalTokenDays = Math.round(tokenLifetime / (24 * 60 * 60 * 1000));
-        const rememberMe = originalTokenDays === 15;
-        const newRefreshTokenExpiryDays = rememberMe ? 15 : 1;
-
-        // Generate new access token
-        const accessToken = jwt.sign(
-            {
-                id: decoded.id,
-                email: decoded.email,
-                role: decoded.role,
-            },
-            process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '1m' }
-        );
-
-        let newRefreshToken = null;
-
-        // Rotate refresh token if within last 50% of its life
-        if (tokenAgePercentage >= 50) {
-            // Delete old refresh token
-            await query(refreshTokenQueries.deleteToken, [refreshToken]);
-
-            // Generate new refresh token
-            newRefreshToken = jwt.sign(
-                {
-                    id: decoded.id,
-                    email: decoded.email,
-                    role: decoded.role, 
-                },
-                process.env.REFRESH_TOKEN_SECRET,
-                { expiresIn: `${newRefreshTokenExpiryDays}d` }
-            );
-
-            // Store new refresh token in database
-            await query(refreshTokenQueries.createRefreshToken, [
-                decoded.id,
-                newRefreshToken,
-                new Date(Date.now() + newRefreshTokenExpiryDays * 24 * 60 * 60 * 1000),
-                req.ip,
-                req.get('User-Agent')
-            ]);
-
-            // Set new refresh token cookie
-            res.cookie('jwt', newRefreshToken, {
-                httpOnly: true,
-                secure: isProduction,
-                sameSite: isProduction ? 'None' : 'Lax',
-                maxAge: newRefreshTokenExpiryDays * 24 * 60 * 60 * 1000
-            });
-        }
-
-        res.json({
-            success: true,
-            message: "Access Token generation successful.",
-            accessToken: accessToken,
-            tokenRotated: !!newRefreshToken, // Indicate if a new refresh token was issued
-            user: {
-                id: decoded.id,
-                email: decoded.email,
-                role: decoded.role,
-            }
+        res.cookie(REFRESH_TOKEN_COOKIE, result.refreshToken, {
+            ...REFRESH_COOKIE_BASE_OPTIONS,
+            maxAge: cookieMaxAge
         });
 
-    } catch (err) {
-        if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
-            // Auto-cleanup expired/invalid tokens
-            await query(refreshTokenQueries.deleteToken, [refreshToken]);
-            return res.status(403).clearCookie('jwt', {
-                httpOnly: true,
-                secure: isProduction,
-                sameSite: isProduction ? 'None' : 'Lax',
-                path: '/'
-            }).json({
-                success: false,
-                message: "Invalid refresh token"
-            });
+        return res.status(200).json({
+            success: true,
+            data: {
+                accessToken: result.accessToken
+            }
+        });
+    } catch (error) {
+        // Any refresh failure clears the stale cookie.
+        if (error.statusCode === 401) {
+            res.clearCookie(REFRESH_TOKEN_COOKIE, REFRESH_COOKIE_BASE_OPTIONS);
         }
-        next(err);
-    }
-}
 
-module.exports = refreshToken;
+        return next(error);
+    }
+};
+
+module.exports = { refresh };

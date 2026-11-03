@@ -1,0 +1,312 @@
+/* pages/staff/styles/ViewStaff.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.pageWrapper {
+    min-height: 100vh;
+    background-color: #fdfdfd;
+    font-family: 'Inter', sans-serif;
+    color: #1a1a1a;
+    padding: 2rem 1.5rem 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pageContainer {
+    width: 100%;
+    max-width: 1100px;
+}
+
+.topActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: none;
+    border: none;
+    padding: 0.25rem 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.backButton:hover {
+    color: #1a1a1a;
+}
+
+/* Grid Layout */
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 850px) {
+    .gridContainer {
+        grid-template-columns: 1.3fr 1fr;
+        /* Left side slightly wider */
+    }
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Card Styles */
+.card {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.cardTitleGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cardIcon {
+    color: #6b7280;
+}
+
+.cardTitle {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.editBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editBtn:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+}
+
+.cardBody {
+    padding: 1.5rem;
+}
+
+/* Info Grid */
+.infoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.infoLabel {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #9ca3af;
+}
+
+.infoValue {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+/* Contact Styles */
+.contactSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sectionSubLabel {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #374151;
+}
+
+.contactGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.contactItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.contactValue {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #2563eb;
+    /* Light blue link color for phone/email */
+    background-color: #f0f7ff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Address Styles */
+.addressBlock {
+    margin-bottom: 1rem;
+}
+
+.addressBlock:last-child {
+    margin-bottom: 0;
+}
+
+.addressHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.linkBtn {
+    background: none;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4b5563;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.linkBtn:hover {
+    color: #1a1a1a;
+    text-decoration: underline;
+}
+
+.addressText {
+    font-size: 0.875rem;
+    color: #1a1a1a;
+    line-height: 1.5;
+}
+
+.noteBox {
+    margin-top: 0.5rem;
+    background-color: #f3f4f6;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.noteLabel {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #9ca3af;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.noteBox p {
+    font-size: 0.8125rem;
+    color: #4b5563;
+    margin: 0;
+}
+
+.divider {
+    height: 1px;
+    background-color: #e5e7eb;
+    margin: 1rem 0;
+}
+
+/* Status Badges */
+.statusBadge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    width: fit-content;
+}
+
+.statusActive {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.statusInactive {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.emptyText {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Loading / Error States */
+.stateCard {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 1.25rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stateTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.stateText {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #eeeeee;
+    border-top: 2px solid #1a1a1a;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

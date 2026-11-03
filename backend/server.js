@@ -9,6 +9,8 @@ const errorHandler = require('./middleware/errorHandler');
 
 //routes
 const authRoutes = require('./routes/auth');
+const projectRoutes = require('./routes/project');
+const taskRoutes = require('./routes/tasks');
 const testRoutes = require('./routes/test');
 const app = express();
 
@@ -22,12 +24,14 @@ app.use(cors({
         'http://192.168.1.191:5173',
         'http://192.168.1.192:5173'
     ], // Allow requests from your client's origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/public', express.static('public'))
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
 
@@ -44,7 +48,16 @@ const limiter = rateLimit({
 app.use('/api/auth', limiter);
 
 app.use('/api/auth', authRoutes);
-app.use("/users", testRoutes)
+app.use('/api/projects', projectRoutes);
+app.use('/api/tasks', taskRoutes);
+app.use("/api/reports", require('./routes/report'))
+app.use('/api/rbac', require('./routes/rbac'));
+app.use('/api/staff', require('./routes/staff'));
+app.use('/api/notifications', require('./routes/notification'));
+
+
+
+// app.use("/users", testRoutes)
 
 
 app.get('/api/health', (req, res) => {
@@ -53,6 +66,7 @@ app.get('/api/health', (req, res) => {
         success: true,
         message: 'Server is running from backend now',
         timestamp: new Date().toISOString(),
+        port: PORT
     });
 });
 
@@ -60,7 +74,7 @@ app.get('/api/health', (req, res) => {
 app.use(errorHandler);
 
 
-const PORT = process.env.PORT || 5177;
+const PORT = process.env.PORT || 5178;
 
 app.listen(PORT, (err) => {
     if (err) {

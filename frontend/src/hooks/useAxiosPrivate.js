@@ -6,6 +6,13 @@ import useAuth from "./useAuth";
 let isRefreshing = false;
 let failedQueue = [];
 
+
+export const clearAxiosPrivateQueue = () => {
+    failedQueue.forEach(prom => prom.reject(new Error("Queue cleared on navigation")));
+    failedQueue = [];
+    isRefreshing = false;
+};
+
 const processQueue = (error, token = null) => {
     failedQueue.forEach(prom => {
         if (error) {
@@ -33,53 +40,54 @@ const useAxiosPrivate = () => {
         );
 
         const responseIntercept = axiosPrivate.interceptors.response.use(
-            response => response,
-            async (error) => {
-                const prevRequest = error?.config;
+    response => response,
+    async (error) => {
+        const prevRequest = error?.config;
 
-                // Check for 401
-                if (error?.response?.status === 401 && !prevRequest?.sent) {
-                    // Note: Depending on your backend, you can restrict this explicitly by message
-                    // if (error?.response?.data?.message === 'Access token expired') {
+        // 🚀 CRITICAL FIX: Skip refresh logic if this is the login route!
+        if (prevRequest?.url?.includes('/api/auth/login')) {
+            return Promise.reject(error); // Sends the 401 straight to onError
+        }
 
-                    if (isRefreshing) {
-                        // Queue concurrent requests while token is actively refreshing
-                        try {
-                            const token = await new Promise((resolve, reject) => {
-                                failedQueue.push({ resolve, reject });
-                            });
-                            prevRequest.headers['Authorization'] = `Bearer ${token}`;
-                            return axiosPrivate(prevRequest);
-                        } catch (err) {
-                            return Promise.reject(err);
-                        }
-                    }
-
-                    prevRequest.sent = true;
-                    isRefreshing = true;
-
-                    try {
-                        const newAccessToken = await refresh();
-                        processQueue(null, newAccessToken);
-                        
-                        prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                        return axiosPrivate(prevRequest);
-                    } catch (refreshError) {
-                        processQueue(refreshError, null);
-                        
-                        // If refresh fails, redirect to login
-                        console.log('Refresh token expired, redirecting to login');
-                        window.location.href = '/login';
-                        return Promise.reject(refreshError);
-                    } finally {
-                        isRefreshing = false;
-                    }
+        // Check for 401 for all other secure routes
+        if (error?.response?.status === 401 && !prevRequest?.sent) {
+            if (isRefreshing) {
+                try {
+                    const token = await new Promise((resolve, reject) => {
+                        failedQueue.push({ resolve, reject });
+                    });
+                    prevRequest.headers['Authorization'] = `Bearer ${token}`;
+                    return axiosPrivate(prevRequest);
+                } catch (err) {
+                    return Promise.reject(err);
                 }
-
-                // For 403 (invalid token) or other errors, don't retry
-                return Promise.reject(error);
             }
-        );
+
+            prevRequest.sent = true;
+            isRefreshing = true;
+
+            try {
+                const newAccessToken = await refresh();
+                processQueue(null, newAccessToken);
+                
+                prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                return axiosPrivate(prevRequest);
+            } catch (refreshError) {
+                processQueue(refreshError, null);
+                
+                console.log('Refresh token expired, redirecting to login');
+                window.location.href = '/login';
+                return Promise.reject(refreshError);
+            } finally {
+                isRefreshing = false;
+            }
+        }
+
+        // For 403 (invalid token) or other errors, don't retry
+        return Promise.reject(error);
+    }
+);
+
 
         return () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);

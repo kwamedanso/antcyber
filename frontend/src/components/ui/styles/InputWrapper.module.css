@@ -1,0 +1,187 @@
+/* .wrapper {
+    display: flex;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.layoutTop {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.layoutLeft {
+    flex-direction: row;
+    align-items: center;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+}
+
+.layoutLeft .label {
+    margin-bottom: 0;
+    margin-right: 16px;
+    text-align: left;
+}
+
+.inputContainer {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.errorMessage {
+    font-size: 12px;
+    color: #666666;
+    margin-top: 4px;
+} */
+
+
+
+
+.wrapper {
+    display: flex;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* -------- PLACEMENTS -------- */
+
+/* Top: column, label first */
+.placementTop {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Bottom: column, input first (label after) */
+.placementBottom {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.placementBottom .inputContainer {
+    order: 1;
+}
+
+.placementBottom .label {
+    order: 2;
+    margin-top: 4px;
+    /* space between input and label */
+    margin-bottom: 0;
+    /* override default bottom margin */
+}
+
+/* Left: row, label first */
+.placementLeft {
+    flex-direction: row;
+    align-items: center;
+}
+
+.placementLeft .label {
+    margin-right: 16px;
+    margin-bottom: 0;
+}
+
+/* Right: row, input first (label after) */
+.placementRight {
+    flex-direction: row;
+    align-items: center;
+}
+
+.placementRight .inputContainer {
+    order: 1;
+}
+
+.placementRight .label {
+    order: 2;
+    margin-left: 16px;
+    margin-bottom: 0;
+}
+
+/* -------- LABEL & INPUT CONTAINER -------- */
+
+.label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+    display: inline-flex;
+    /* to keep label and icon inline */
+    align-items: center;
+    position: relative;
+    /* for tooltip positioning */
+}
+
+.inputContainer {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* -------- ERROR -------- */
+
+.errorMessage {
+    font-size: 12px;
+    color: #666666;
+    margin-top: 4px;
+}
+
+/* -------- INFO ICON & TOOLTIP -------- */
+
+.infoIcon {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 6px;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+    line-height: 1;
+}
+
+.infoIcon:hover {
+    color: #1a1a1a;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #222;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    width: 14rem;
+    white-space: normal;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    pointer-events: none;
+    /* so hover doesn't interfere */
+}
+
+/* Small triangle tip (optional) */
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #222;
+}
+
+@media (max-width: 450px) {
+    .tooltip {
+        width: 300px;
+    }
+}

@@ -1,0 +1,56 @@
+.wrapper {
+    display: flex;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    margin-bottom: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.layoutTop {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.layoutLeft {
+    flex-direction: row;
+    align-items: center;
+}
+
+.mainLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+}
+
+.layoutLeft .mainLabel {
+    margin-bottom: 0;
+    margin-right: 16px;
+    min-width: 120px;
+}
+
+.inputsRow {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    width: 100%;
+}
+
+.accountCol {
+    flex: 3;
+}
+
+.amountCol {
+    flex: 2;
+}
+
+.accountCol :global(div),
+.amountCol :global(div) {
+    margin-bottom: 0 !important;
+}
+
+.errorMsg {
+    font-size: 12px;
+    color: #666666;
+    margin-top: 4px;
+}

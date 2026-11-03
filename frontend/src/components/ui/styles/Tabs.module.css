@@ -1,0 +1,103 @@
+.tabsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Base header track containing bottom boundary divider */
+.headerRow {
+    width: 100%;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    z-index: 10;
+}
+
+/* Triggers sticky positioning pinned to topmost boundary scroll offset parent */
+.stickyHeader {
+    position: sticky;
+    /* top: 0; */
+}
+
+/* Horizontal scrolling track setup for mobile touch interaction */
+.tabList {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+
+    /* Hides industrial native desktop scroll bars but preserves sliding capabilities */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.tabList::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+.tabItem {
+    display: inline-block;
+}
+
+.tabButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666666;
+    /* Unselected grey color */
+    cursor: pointer;
+    position: relative;
+    transition: color 0.15s ease;
+    outline: none;
+}
+
+.tabButton:hover {
+    color: #000000;
+}
+
+/* Active Highlight Underline Border Track mimicking your provided target layouts */
+.activeButton {
+    color: #000000 !important;
+    font-weight: 600;
+}
+
+.activeButton::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    /* Overlaps precisely with the wrapper track parent line */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #000000;
+    /* Pure Black border underline indicator */
+}
+
+.iconWrapper {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+    font-size: 16px;
+    color: inherit;
+}
+
+.labelWrapper {
+    display: inline-block;
+}
+
+/* Panel Body Base Container Layout rules */
+.panelContent {
+    width: 100%;
+    padding-top: 16px;
+    box-sizing: border-box;
+}

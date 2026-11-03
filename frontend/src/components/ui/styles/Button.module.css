@@ -1,0 +1,103 @@
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    min-height: 40px;
+    /* Aligns cleanly side-by-side with your standard ERP inputs */
+    box-sizing: border-box;
+    user-select: none;
+}
+
+/* Variant 1: Pure Black Button */
+.primary {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.primary:hover:not(:disabled) {
+    background-color: #222222;
+}
+
+/* Variant 2: Solid Dark Grey Button */
+.secondary {
+    background-color: #eeeeee;
+    color: #000000;
+}
+
+.secondary:hover:not(:disabled) {
+    background-color: #e0e0e0;
+}
+
+/* Variant 3: Transparent Bordered Layout */
+.outline {
+    background-color: transparent;
+    border-color: #cccccc;
+    color: #000000;
+}
+
+.outline:hover:not(:disabled) {
+    border-color: #000000;
+    background-color: #fafafa;
+}
+
+/* Disabled and Loading Core Overrides */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.loadingState {
+    cursor: wait !important;
+}
+
+/* Spinner Framework Structure Layouts */
+.spinnerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: inline-block;
+}
+
+/* Contextual spinner colors based on layout variant properties */
+.primary .spinner {
+    border-color: rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+}
+
+.secondary .spinner,
+.outline .spinner {
+    border-color: rgba(0, 0, 0, 0.1);
+    border-top-color: #000000;
+}
+
+.loadingText {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

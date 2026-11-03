@@ -1,26 +1,37 @@
-/* Mobile Overlay */
-.mobileOverlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(4px);
-  z-index: 60;
-}
+/* components/dashboard-layout/styles/Sidebar.module.css */
 
-@media (min-width: 1024px) {
-  .mobileOverlay {
-    display: none;
-  }
-}
-
-/* Sidebar Container */
 .sidebar {
+  /* ---- Ant Cyber color tokens ---- */
+  --ac-sage: var(--app-sage, #c1d195);
+  /* light accent tint   */
+  --ac-teal: var(--app-teal, #779296);
+  /* primary accent      */
+  --ac-emerald: var(--app-emerald, #143b25);
+  /* emerald green       */
+  --ac-gray: var(--app-gray, #aab3b7);
+  /* cool neutral        */
+
+  /* ---- derived tokens ---- */
+  --sb-bg: var(--app-surface, #ffffff);
+  --sb-border: color-mix(in srgb, var(--ac-gray) 35%, transparent);
+  --sb-text: var(--app-text, #1f2a2e);
+  --sb-text-muted: var(--ac-gray);
+  --sb-text-subtle: color-mix(in srgb, var(--ac-teal) 70%, #1f2a2e);
+  --sb-hover: color-mix(in srgb, var(--ac-sage) 35%, transparent);
+  --sb-accent: var(--ac-teal);
+  --sb-accent-contrast: #ffffff;
+  --sb-accent-soft: color-mix(in srgb, var(--ac-sage) 55%, transparent);
+  --sb-accent-shadow: color-mix(in srgb, var(--ac-teal) 25%, transparent);
+  --sb-scrollbar: color-mix(in srgb, var(--ac-gray) 40%, transparent);
+  --sb-scrollbar-hover: color-mix(in srgb, var(--ac-gray) 60%, transparent);
+  --sb-overlay: color-mix(in srgb, #1f2a2e 35%, transparent);
+
   position: fixed;
   top: 0;
   left: 0;
   height: 100dvh;
-  background-color: white;
-  border-right: 1px solid #f3f4f6;
+  background-color: var(--sb-bg);
+  border-right: 1px solid var(--sb-border);
   display: flex;
   flex-direction: column;
   z-index: 70;
@@ -34,7 +45,26 @@
   }
 }
 
-/* Sidebar Header */
+/* ============================================================
+   Mobile Overlay
+   ============================================================ */
+.mobileOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--sb-overlay, rgba(31, 42, 46, 0.35));
+  backdrop-filter: blur(4px);
+  z-index: 60;
+}
+
+@media (min-width: 1024px) {
+  .mobileOverlay {
+    display: none;
+  }
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
 .sidebarHeader {
   padding: 1rem;
   position: relative;
@@ -57,16 +87,16 @@
 .workspaceIcon {
   width: 2.5rem;
   height: 2.5rem;
-  background-color: #4f46e5;
+  background: linear-gradient(135deg, var(--ac-teal) 0%, var(--ac-emerald) 100%);
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #ffffff;
   font-weight: 700;
   font-size: 1.125rem;
   flex-shrink: 0;
-  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
+  box-shadow: 0 10px 15px -3px var(--sb-accent-shadow);
 }
 
 .workspaceInfo {
@@ -76,7 +106,7 @@
 .workspaceName {
   font-size: 1rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--sb-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -85,18 +115,20 @@
 .workspacePlan {
   font-size: 0.75rem;
   line-height: 1rem;
-  color: #9ca3af;
+  color: var(--sb-text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .chevronIcon {
-  color: #9ca3af;
+  color: var(--sb-text-muted);
   cursor: pointer;
 }
 
-/* Navigation Area */
+/* ============================================================
+   Navigation Area
+   ============================================================ */
 .navArea {
   flex: 1;
   overflow-y: auto;
@@ -104,7 +136,6 @@
   padding-right: 1rem;
 }
 
-/* Custom scrollbar */
 .navArea::-webkit-scrollbar {
   width: 4px;
 }
@@ -114,14 +145,17 @@
 }
 
 .navArea::-webkit-scrollbar-thumb {
-  background: #f3f4f6;
+  background: var(--sb-scrollbar);
   border-radius: 10px;
 }
 
 .navArea::-webkit-scrollbar-thumb:hover {
-  background: #e5e7eb;
+  background: var(--sb-scrollbar-hover);
 }
 
+/* ============================================================
+   Section
+   ============================================================ */
 .navSection {
   margin-top: 2rem;
 }
@@ -140,32 +174,37 @@
   line-height: 0.875rem;
   text-transform: uppercase;
   font-weight: 700;
-  color: #9ca3af;
+  color: var(--sb-text-muted);
   letter-spacing: 0.025em;
 }
 
 .addIcon {
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--sb-text-muted);
   cursor: pointer;
   transition: color 0.15s ease;
 }
 
 .addIcon:hover {
-  color: #4b5563;
+  color: var(--ac-teal);
 }
 
-/* Sidebar Footer */
+/* ============================================================
+   Footer
+   ============================================================ */
 .sidebarFooter {
   padding: 1rem;
-  border-top: 1px solid #f9fafb;
-  background-color: white;
+  border-top: 1px solid var(--sb-border);
+  background-color: var(--sb-bg);
 }
 
 .footerNav {
   margin-bottom: 1rem;
 }
 
+/* ============================================================
+   Profile
+   ============================================================ */
 .profileContainer {
   position: relative;
 }
@@ -181,7 +220,7 @@
 }
 
 .profileTrigger:hover {
-  background-color: #f3f4f6;
+  background-color: var(--sb-hover);
 }
 
 .profileTriggerCollapsed {
@@ -192,7 +231,16 @@
   width: 2rem;
   height: 2rem;
   border-radius: 0.5rem;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--ac-teal) 0%, var(--ac-emerald) 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.025em;
+  flex-shrink: 0;
+  user-select: none;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
@@ -202,19 +250,19 @@
 }
 
 .profileName {
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   line-height: 1rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--sb-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .profileEmail {
-  font-size: 0.625rem;
+  font-size: 0.825rem;
   line-height: 0.875rem;
-  color: #9ca3af;
+  color: var(--sb-text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -222,5 +270,9 @@
 
 .profileChevron {
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--sb-text-muted);
+}
+
+::-webkit-scrollbar {
+  display: none !important;
 }
