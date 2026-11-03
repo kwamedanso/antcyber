@@ -8,7 +8,7 @@ import {
   LuChevronRight,
 //   LuGlobe,
 } from 'react-icons/lu';
-import styles from '../public/styles/webEngineering.module.css';
+import styles from '../public/styles/WebEngineering.module.css';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import ceoProfile from "../../assets/antwi.jpg"
 import legalProfile from "../../assets/legal.jpeg"
 import developerProfile from "../../assets/developer.jpeg"
-import rolandProfile from "../../assets/roland.jpg"
+import rolandProfile from "../../assets/roland.JPG"
 import claudetteProfile from "../../assets/claudette.jpeg"
 // import strategyProfile from "../../assets/strategy.jpg"
 // import operationsProfile from "../../assets/operations.jpg"
