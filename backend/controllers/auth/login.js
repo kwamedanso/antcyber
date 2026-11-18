@@ -9,9 +9,9 @@ const REFRESH_TOKEN_COOKIE = 'refresh_token';
 
 const REFRESH_COOKIE_BASE_OPTIONS = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', 
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    path: '/',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite:process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    path: '/'
 };
 
 // ============================================================================
@@ -40,7 +40,7 @@ const login = async (req, res, next) => {
     try {
         const { email, password, rememberMe = false } = req.body || {};
 
-        
+
         if (typeof email !== 'string' || typeof password !== 'string') {
             return res.status(400).json({
                 success: false,
@@ -48,7 +48,7 @@ const login = async (req, res, next) => {
                 message: 'Email and password are required.'
             });
         }
-        
+
         const meta = extractClientMeta(req);
 
         const result = await authService.loginUser(
