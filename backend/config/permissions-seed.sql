@@ -79,3 +79,14 @@ INSERT INTO permissions (resource, action, display_name, category, description, 
 ('roles', 'delete', 'Delete Roles', 'Roles', 'Delete roles',                             'roles'),
 ('roles', 'assign', 'Assign Roles', 'Roles', 'Assign roles to staff',                        'roles'),
 ('roles', 'unassign', 'Unassign Roles', 'Roles', 'Unassign roles from staff',                  'roles');
+
+
+
+INSERT INTO permissions (resource, action, display_name, category, description, module)
+VALUES
+-- Standard CRUD
+('attendance', 'view', 'View Attendance Records', 'Attendance', 'View attendance records (own or scoped by role)', 'Attendance'),
+('attendance', 'view_all', 'View All Attendance Records', 'Attendance', 'View attendance records for all staff across the organization', 'Attendance'),
+('attendance', 'create', 'Create Attendance Record', 'Attendance', 'Manually create an attendance record on behalf of a staff member', 'Attendance'),
+('attendance', 'update', 'Update Attendance Record', 'Attendance', 'Edit an existing attendance record (e.g., correct clock-in/out times)', 'Attendance'),
+('attendance', 'delete', 'Delete Attendance Record', 'Attendance', 'Soft/hard delete an attendance record', 'Attendance');

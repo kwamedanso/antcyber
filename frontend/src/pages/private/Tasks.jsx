@@ -31,6 +31,7 @@ const getStatusStyle = (status) => {
     case 'in_progress': return { color: '#2563eb' };
     case 'blocked': return { color: '#dc2626' };
     case 'cancelled': return { color: '#6b7280' };
+    case 'overdue': return { color: '#dc2626' };
     default: return { color: '#ea580c' };
   }
 };

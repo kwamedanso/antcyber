@@ -25,6 +25,8 @@ const taskRoutes = require('./routes/tasks');
 const testRoutes = require('./routes/test');
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(cookieParser());
 
 // Use cors middleware
@@ -61,6 +63,8 @@ app.use('/api/rbac', require('./routes/rbac'));
 app.use('/api/staff', require('./routes/staff'));
 app.use('/api/notifications', require('./routes/notification'));
 app.use("/api/setup", require("./routes/setup"));
+app.use('/api/attendance', require('./routes/attendance'));
+
 
 
 

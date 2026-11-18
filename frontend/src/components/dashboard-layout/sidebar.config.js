@@ -65,11 +65,32 @@ export const sidebarConfig = [
         items: [
             {
                 label: "Staff Details",
-                icon: "people",
+                icon: "users",
                 to: "/admin/staff",
                 resource: "staff", 
                 action: "view",
-            },
+            },{
+                label: "Attendance",
+                icon: "attendance",
+                resource: "attendance", 
+                action: "view",
+                children: [
+                     {
+                label: "My Attendance",
+                icon: "attendance",
+                to: "/admin/my-attendance/",
+                resource: "attendance", 
+                action: "view",
+            }, 
+             {
+                label: "Staff Attendance",
+                icon: "attendance",
+                to: "/admin/staff-attendance/",
+                resource: "attendance", 
+                action: "view_all",
+            }
+                ]
+            }
             
         ]
     },

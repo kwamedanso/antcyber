@@ -49,6 +49,11 @@ const ViewStaff = lazy(() => import("./pages/private/ViewStaff"));
 const Setup = lazy(() => import("./pages/public/Setup"));
 const ForcedChangePassword = lazy(() => import("./pages/public/ForcedChangePassword"));
 
+const Attendance = lazy(() => import("./pages/private/Attendance"))
+const MyAttendance = lazy(() => import("./pages/private/MyAttendance"))
+const StaffAttendance = lazy(() => import("./pages/private/StaffAttendance"))
+const AttendanceDetails = lazy(() => import("./pages/private/AttendanceDetails"))
+
 // 1. Create a Root Layout to wrap the application and inject ScrollRestoration
 function RootLayout() {
   return (
@@ -222,6 +227,22 @@ const router = createBrowserRouter([
               {
                 path: "staff",
                 element: <Staff />,
+              },
+              {
+                path: "attendance",
+                element: <Attendance />,
+              },
+              {
+                path: "my-attendance",
+                element: <MyAttendance />,
+              },
+              {
+                path: "staff-attendance",
+                element: <StaffAttendance />,
+              },
+              {
+                path: "attendance/:id",
+                element: <AttendanceDetails />,
               },
               {
                 element: <Authorize allowedRoles={["administrator"]} />,

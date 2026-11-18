@@ -20,6 +20,7 @@ import styles from './styles/CreateStaff.module.css';
 // Validation Schema
 // ----------------------------------------------------------------------------
 const staffSchema = z.object({
+  staff_id: z.string().min(7, "Staff ID is required"),
   email: z.string().email('Invalid email address'),
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
@@ -66,7 +67,7 @@ const CreateStaff = () => {
 
   // --- Form State ---
   const [formData, setFormData] = useState({
-    email: '', first_name: '', middle_name: '', last_name: '',
+    staff_id: "", email: '', first_name: '', middle_name: '', last_name: '',
     title: '', rank: '', gender: '', date_of_birth: '', user_type: 'employee',
     employment_date: '', employment_status: 'active',
     contacts: [], identifications: [], addresses: [], education: [],
@@ -341,6 +342,7 @@ const CreateStaff = () => {
                   </div>
                 </div>
                 <div className={styles.row}>
+                   
                   <div className={styles.inputGroup}>
                     <TextInput label="Email Address *" type="email" value={formData.email} onChange={e => setFormData(p => ({...p, email: e.target.value}))} error={errors.email} />
                   </div>
@@ -363,6 +365,9 @@ const CreateStaff = () => {
                 {/* Employment */}
                 <h3 className={styles.sectionTitle}>Employment Details</h3>
                 <div className={styles.row}>
+                  <div className={styles.inputGroup}>
+                    <TextInput label="Staff ID *" value={formData.staff_id} onChange={e => setFormData(p => ({...p, staff_id: e.target.value}))} error={errors.staff_id} />
+                  </div>
                   <div className={styles.inputGroup}>
                     <TextInput label="Rank *" value={formData.rank} onChange={e => setFormData(p => ({...p, rank: e.target.value}))} error={errors.rank} />
                   </div>

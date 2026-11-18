@@ -52,7 +52,7 @@ const generateReportReference = async (client) => {
          WHERE reference_number LIKE $1 
          ORDER BY reference_number DESC 
          LIMIT 1`,
-        [`REP-${year}-%`]
+        [`ACE-${year}-%`]
     );
 
     let nextSequence = 1;
@@ -62,7 +62,7 @@ const generateReportReference = async (client) => {
         const sequence = parseInt(parts[parts.length - 1], 10);
         if (!isNaN(sequence)) nextSequence = sequence + 1;
     }
-    return `REP-${year}-${String(nextSequence).padStart(5, '0')}`;
+    return `ACE-${year}-${String(nextSequence).padStart(5, '0')}`;
 };
 
 // ============================================================================

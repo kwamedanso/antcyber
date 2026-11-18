@@ -24,12 +24,12 @@
 }
 
 .linkActive {
-    color: #4f46e5;
+    color: #143b25;
     font-weight: 500;
 }
 
 .linkActive:hover {
-    color: #4f46e5;
+    color: #143b25;
     background-color: #eef2ff;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .branchToggle:focus-visible {
-    outline: 2px solid #4f46e5;
+    outline: 2px solid #143b25;
     outline-offset: 1px;
 }
 

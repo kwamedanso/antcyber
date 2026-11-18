@@ -20,6 +20,7 @@ import styles from './styles/EditStaff.module.css';
 // Validation & Constants
 // ----------------------------------------------------------------------------
 const staffSchema = z.object({
+  // staff_id: z.string().min(7, "Staff ID is required"),
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
   middle_name: z.string().optional(),
@@ -66,7 +67,7 @@ const EditStaff = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   
   const [formData, setFormData] = useState({
-    first_name: '', middle_name: '', last_name: '',
+    staff_id: "", first_name: '', middle_name: '', last_name: '',
     title: '', rank: '', gender: '', date_of_birth: '', 
     employment_date: '', employment_status: 'active',
     contacts: [], identifications: [], addresses: [], education: [],
@@ -127,6 +128,7 @@ const EditStaff = () => {
         last_name: staff.last_name || '',
         title: staff.title || '',
         rank: staff.rank || '',
+        staff_id: staff.staff_id || "",
         gender: staff.gender || '',
         date_of_birth: staff.date_of_birth ? staff.date_of_birth.split('T')[0] : '',
         employment_date: staff.employment_date ? staff.employment_date.split('T')[0] : '',
@@ -175,8 +177,11 @@ const EditStaff = () => {
   // Mutations
   // --------------------------------------------------------------------------
   const { mutate: updateStaff, isPending: isUpdating } = usePrivateMutation({
-    targetQueryKey: [['staff'], ['staff', id], ['user-access', staff?.user_id]],
-    onSuccess: () => toast.success('Staff profile updated.', { duration: 3000 }),
+    targetQueryKey: ["staff"],
+    onSuccess: () => {
+      toast.success('Staff profile updated.', { duration: 3000 });
+      navigate(-1)
+    },
     onError: (error) => toast.error(error?.response?.data?.message || 'Failed to update.', { duration: 4000 }),
   });
 
@@ -334,6 +339,8 @@ const EditStaff = () => {
       permission_overrides: { granted, denied }
     };
 
+    console.log(payload)
+
     updateStaff({
       url: `/api/staff/${id}`,
       method: 'PATCH',
@@ -429,6 +436,9 @@ const EditStaff = () => {
                 </div>
                 <h3 className={styles.sectionTitle}>Employment Details</h3>
                 <div className={styles.row}>
+                  <div className={styles.inputGroup}>
+                    <TextInput label="Staff ID *" value={formData.staff_id} onChange={e => setFormData(p => ({...p, staff_id: e.target.value}))} error={errors.staff_id} />
+                  </div>
                   <div className={styles.inputGroup}><TextInput label="Rank *" value={formData.rank} onChange={e => setFormData(p => ({...p, rank: e.target.value}))} error={errors.rank} /></div>
                   <div className={styles.inputGroup}><DatePickerInput label="Employment Date" value={formData.employment_date} onChange={v => setFormData(p => ({...p, employment_date: v}))} /></div>
                   <div className={styles.inputGroup}><SelectInput label="Employment Status" options={['active','suspended','study_leave','retired','resigned','terminated'].map(s => ({value:s, label:s}))} value={formData.employment_status} onChange={e => setFormData(p => ({...p, employment_status: e.target.value}))} /></div>

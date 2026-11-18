@@ -22,8 +22,8 @@ const refresh = async (req, res, next) => {
     try {
         const refreshToken = req.cookies?.[REFRESH_TOKEN_COOKIE] || null;
 
-        console.log(refreshToken);
-        console.log(req.cookies);
+        // console.log(refreshToken);
+        // console.log(req.cookies);
         // return
 
 

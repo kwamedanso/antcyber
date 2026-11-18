@@ -16,9 +16,9 @@ INSERT INTO users (
     updated_by
 ) VALUES (
     '$2a$12$R0qM5X8Wf8WbZtW5R5vGbeG7lG6vK3lG7lG6vK3lG7lG6vK3lG7lG',
-    FALSE,                       -- force password change on first login
+    TRUE,                       -- force password change on first login
     'employee',
-    'kwamedanso@gmail.com',
+    'dansokwame96@gmail.com',
     CURRENT_TIMESTAMP,          -- treat seed email as verified
     0,
     NULL,
@@ -45,8 +45,8 @@ INSERT INTO staffs (
     employment_date,
     employment_status
 ) VALUES (
-    '484c9bcb-c590-47e6-97e7-0e8f1d287e05',
-    '1607454',
+    '53dcecb3-5894-4b6d-a202-0a9f97102101',
+    'ACE-000',
     'Kwame',
     'Amoafo',                       -- no middle name provided
     'Danso',

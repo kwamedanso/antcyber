@@ -16,7 +16,7 @@
 
 .pageContainer {
     width: 100%;
-    max-width: 960px;
+    /* max-width: 960px; */
 }
 
 .backButton {
@@ -441,6 +441,9 @@
    RESPONSIVE
    ============================================================================ */
 @media (max-width: 768px) {
+    .pageWrapper{
+        padding: 0;
+    }
 
     .row,
     .dynamicGrid {

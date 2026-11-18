@@ -10,6 +10,8 @@ import {
 import { FaTasks,FaProjectDiagram  } from 'react-icons/fa';
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import { CgNotes } from "react-icons/cg";
+import { LiaUserCheckSolid } from "react-icons/lia";
+
 
 const ICON_MAP = {
   dashboard:  FiInbox,
@@ -33,7 +35,8 @@ const ICON_MAP = {
   settings:   FiSettings,
   tasks:      FaTasks,
   project_diagram: FaProjectDiagram,
-  report: CgNotes
+  report: CgNotes,
+  attendance: LiaUserCheckSolid
 };
 
 /**

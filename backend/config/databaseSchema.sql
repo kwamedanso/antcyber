@@ -529,3 +529,50 @@ CREATE TABLE notifications (
 -- Index for fast lookups of a user's unread notifications
 CREATE INDEX idx_notifications_user_unread ON notifications(user_id) WHERE is_read = FALSE;
 CREATE INDEX idx_notifications_created ON notifications(created_at DESC);
+
+
+
+
+
+-------------------------------------
+---------ATTENDANCE MODULE-----------
+-------------------------------------
+
+-- Drop the old table if you created it with the wrong schema
+DROP TABLE IF EXISTS attendance_records;
+
+CREATE TABLE attendance_records (
+    attendance_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    staff_id VARCHAR(25) NOT NULL REFERENCES staffs(staff_id) ON DELETE CASCADE,
+
+    -- The user account that performed the action
+    clock_in_user_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    clock_out_user_id UUID REFERENCES users(id) ON DELETE RESTRICT,
+
+    -- Clock-in information
+    clock_in_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    clock_in_latitude NUMERIC(10, 7),
+    clock_in_longitude NUMERIC(10, 7),
+    clock_in_accuracy NUMERIC(10, 2),
+    clock_in_address JSONB,
+
+    -- Clock-out information
+    clock_out_at TIMESTAMPTZ,
+    clock_out_latitude NUMERIC(10, 7),
+    clock_out_longitude NUMERIC(10, 7),
+    clock_out_accuracy NUMERIC(10, 2),
+    clock_out_address JSONB,
+
+    -- Additional information
+    clock_in_device TEXT,
+    clock_out_device TEXT,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT valid_clock_out CHECK (clock_out_at IS NULL OR clock_out_at >= clock_in_at)
+);
+
+CREATE INDEX idx_attendance_staff ON attendance_records(staff_id);
+CREATE INDEX idx_attendance_date ON attendance_records(clock_in_at);

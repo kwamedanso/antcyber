@@ -86,10 +86,10 @@ const Sidebar = ({ isCollapsed, setCollapsed, isMobileOpen, setMobileOpen }) => 
         <div className={styles.sidebarHeader}>
           <div className={styles.workspaceContainer}>
             <div className={styles.workspaceTrigger}>
-              <div className={styles.workspaceIcon}>AC</div>
+              <div className={styles.workspaceIcon}>ACE</div>
               {!isCollapsed && (
                 <div className={styles.workspaceInfo}>
-                  <h1 className={styles.workspaceName}>ANTCYBER ENG.</h1>
+                  <h1 className={styles.workspaceName}>ACE WORKFORCE</h1>
                   <p className={styles.workspacePlan}></p>
                 </div>
               )}

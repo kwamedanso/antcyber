@@ -152,7 +152,7 @@ const createStaff = async (payload, metaData = {}) => {
         email, first_name, middle_name = null, last_name,
         date_of_birth = null, gender = null, title = null,
         employment_date = null, employment_status = 'active', religion_id = null,
-        user_type = 'employee', rank = null,
+        user_type = 'employee', rank = null, staff_id,
         
         contacts = [], identifications = [], addresses = [], education = [],
         role_ids = [], permission_ids = []
@@ -205,7 +205,6 @@ const createStaff = async (payload, metaData = {}) => {
         const user = userInsert.rows[0];
 
         // 3b. staff_id resolution
-        const staffId = await generateStaffId(client);
 
         // 3c. staffs row
         const staffInsert = await client.query(
@@ -215,7 +214,7 @@ const createStaff = async (payload, metaData = {}) => {
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
              RETURNING *`,
             [
-                user.id, staffId, first_name.trim(), middle_name?.trim() || null, last_name.trim(),
+                user.id, staff_id, first_name.trim(), middle_name?.trim() || null, last_name.trim(),
                 normalizeDate(date_of_birth, 'Date of birth'), gender, title, rank,
                 normalizeDate(employment_date, 'Employment date'), employment_status, religion_id || null, actorUserId
             ]
@@ -226,7 +225,7 @@ const createStaff = async (payload, metaData = {}) => {
         await client.query(
             `INSERT INTO staff_contacts (staff_id, contact_type, value, is_primary, is_verified)
              VALUES ($1, 'email', $2, TRUE, TRUE)`,
-            [staffId, normalizedEmail]
+            [staff_id, normalizedEmail]
         );
 
         // 3e. Additional Contacts
@@ -236,7 +235,7 @@ const createStaff = async (payload, metaData = {}) => {
             await client.query(
                 `INSERT INTO staff_contacts (staff_id, contact_type, value, is_primary, is_verified)
                  VALUES ($1, $2, $3, $4, $5)`,
-                [staffId, c.contact_type, c.value, c.is_primary || false, c.is_verified || false]
+                [staff_id, c.contact_type, c.value, c.is_primary || false, c.is_verified || false]
             );
         }
 
@@ -248,7 +247,7 @@ const createStaff = async (payload, metaData = {}) => {
                 `INSERT INTO staff_identifications
                     (staff_id, id_type, id_number, issue_date, expiry_date, is_verified, notes, updated_by)
                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-                [staffId, idn.id_type, idn.id_number, normalizeDate(idn.issue_date), normalizeDate(idn.expiry_date), idn.is_verified || false, idn.notes || null, actorUserId]
+                [staff_id, idn.id_type, idn.id_number, normalizeDate(idn.issue_date), normalizeDate(idn.expiry_date), idn.is_verified || false, idn.notes || null, actorUserId]
             );
         }
 
@@ -259,7 +258,7 @@ const createStaff = async (payload, metaData = {}) => {
                 `INSERT INTO staff_addresses
                     (staff_id, address_type, address, city, region, country, postal_code, notes, updated_by)
                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-                [staffId, addr.address_type, addr.address, addr.city, addr.region, addr.country, addr.postal_code, addr.notes || null, actorUserId]
+                [staff_id, addr.address_type, addr.address, addr.city, addr.region, addr.country, addr.postal_code, addr.notes || null, actorUserId]
             );
         }
 
@@ -272,7 +271,7 @@ const createStaff = async (payload, metaData = {}) => {
                 `INSERT INTO staff_education
                     (staff_id, qualification_type, qualification_name, institution_name, start_year, end_year, grade_obtained, is_verified, document_url)
                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-                [staffId, edu.qualification_type, edu.qualification_name, edu.institution_name, edu.start_year || null, edu.end_year || null, edu.grade_obtained || null, edu.is_verified || false, edu.document_url || null]
+                [staff_id, edu.qualification_type, edu.qualification_name, edu.institution_name, edu.start_year || null, edu.end_year || null, edu.grade_obtained || null, edu.is_verified || false, edu.document_url || null]
             );
         }
 
@@ -334,18 +333,39 @@ const updateStaff = async (staffId, payload, metaData = {}) => {
     requireValue(staffId, 'Staff ID');
 
     const {
+        staff_id: newStaffId, 
         first_name, middle_name, last_name, date_of_birth, gender, title, rank,
         employment_date, employment_status, religion_id,
-        role_ids, permission_ids
+        contacts, identifications, addresses, education,
+        role_ids
     } = payload;
 
     // 1. Update core staff details in a transaction
     const updatedStaff = await withTransaction(async (client) => {
+        // Fetch existing staff to compare
         const existing = await client.query(`SELECT * FROM staffs WHERE staff_id = $1 FOR UPDATE`, [staffId]);
         if (!existing.rows.length) {
             const error = new Error('Staff not found.');
             error.statusCode = 404;
             throw error;
+        }
+
+        const existingStaff = existing.rows[0];
+        const targetStaffId = newStaffId || staffId; 
+        const isIdChanging = targetStaffId !== existingStaff.staff_id;
+
+        // Check for duplicate ID if it's changing
+        if (isIdChanging) {
+            const duplicateCheck = await client.query(`SELECT id FROM staffs WHERE staff_id = $1`, [targetStaffId]);
+            if (duplicateCheck.rows.length > 0) {
+                const error = new Error(`Staff ID "${targetStaffId}" is already in use.`);
+                error.statusCode = 409;
+                throw error;
+            }
+            
+            // 🔥 CRITICAL FIX: Delete the old search index BEFORE updating the staff_id
+            // This prevents the foreign key constraint violation.
+            await client.query(`DELETE FROM staffs_search_index WHERE entity_id = $1`, [existingStaff.staff_id]);
         }
 
         const sets = [];
@@ -354,6 +374,8 @@ const updateStaff = async (staffId, payload, metaData = {}) => {
             params.push(val);
             sets.push(`${col} = $${params.length}`);
         };
+
+        if (isIdChanging) push('staff_id', targetStaffId);
 
         if (first_name !== undefined) push('first_name', first_name.trim());
         if (middle_name !== undefined) push('middle_name', middle_name?.trim() || null);
@@ -370,23 +392,76 @@ const updateStaff = async (staffId, payload, metaData = {}) => {
         sets.push(`updated_by = $${params.length}`);
         sets.push('updated_at = NOW()');
 
-        params.push(staffId);
+        params.push(existingStaff.staff_id);
         const updateResult = await client.query(
             `UPDATE staffs SET ${sets.join(', ')} WHERE staff_id = $${params.length} RETURNING *`,
             params
         );
 
         const staff = updateResult.rows[0];
+
+        // ---------------------------------------------------------
+        // Handle Related Tables
+        // ---------------------------------------------------------
+        if (Array.isArray(contacts)) {
+            await client.query(`DELETE FROM staff_contacts WHERE staff_id = $1`, [targetStaffId]);
+            for (const c of contacts) {
+                await client.query(
+                    `INSERT INTO staff_contacts (staff_id, contact_type, value, is_primary, is_verified)
+                     VALUES ($1, $2, $3, $4, $5)`,
+                    [targetStaffId, c.contact_type, c.value, c.is_primary || false, c.is_verified || false]
+                );
+            }
+        }
+
+        if (Array.isArray(identifications)) {
+            await client.query(`DELETE FROM staff_identifications WHERE staff_id = $1`, [targetStaffId]);
+            for (const idn of identifications) {
+                await client.query(
+                    `INSERT INTO staff_identifications
+                        (staff_id, id_type, id_number, issue_date, expiry_date, is_verified, notes, updated_by)
+                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+                    [targetStaffId, idn.id_type, idn.id_number, normalizeDate(idn.issue_date), normalizeDate(idn.expiry_date), idn.is_verified || false, idn.notes || null, actorUserId]
+                );
+            }
+        }
+
+        if (Array.isArray(addresses)) {
+            await client.query(`DELETE FROM staff_addresses WHERE staff_id = $1`, [targetStaffId]);
+            for (const addr of addresses) {
+                await client.query(
+                    `INSERT INTO staff_addresses
+                        (staff_id, address_type, address, city, region, country, postal_code, notes, updated_by)
+                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+                    [targetStaffId, addr.address_type, addr.address, addr.city, addr.region, addr.country, addr.postal_code, addr.notes || null, actorUserId]
+                );
+            }
+        }
+
+        if (Array.isArray(education)) {
+            await client.query(`DELETE FROM staff_education WHERE staff_id = $1`, [targetStaffId]);
+            for (const edu of education) {
+                await client.query(
+                    `INSERT INTO staff_education
+                        (staff_id, qualification_type, qualification_name, institution_name, start_year, end_year, grade_obtained, is_verified, document_url)
+                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+                    [targetStaffId, edu.qualification_type, edu.qualification_name, edu.institution_name, edu.start_year || null, edu.end_year || null, edu.grade_obtained || null, edu.is_verified || false, edu.document_url || null]
+                );
+            }
+        }
+
+        // ---------------------------------------------------------
+        // Recreate Search Index
+        // ---------------------------------------------------------
+        // Now that the staff_id is updated and related data is saved, we safely upsert the index.
         await upsertStaffSearchIndex(client, staff);
 
         return staff;
     });
 
-    // 2. Update Roles & Permissions (Run after core update)
+    // 2. Update Roles & Permissions
     const userId = updatedStaff.user_id;
-    // console.log(userId, role_ids)
     
-    // Handle Roles Update
     if (Array.isArray(role_ids)) {
         try {
             await query(`DELETE FROM user_roles WHERE user_id = $1`, [userId]);
@@ -398,20 +473,15 @@ const updateStaff = async (staffId, payload, metaData = {}) => {
         }
     }
 
-    // In services/staff/staff.service.js
     if (payload.permission_overrides) {
         try {
             const { granted, denied } = payload.permission_overrides;
-            
-            // 1. Clear existing overrides
             await query(`DELETE FROM user_permissions WHERE user_id = $1`, [userId]);
             
-            // 2. Insert explicit grants
             if (granted && granted.length > 0) {
                 await assignDirectPermissions(userId, granted, true, actorUserId);
             }
             
-            // 3. Insert explicit denies
             if (denied && denied.length > 0) {
                 await assignDirectPermissions(userId, denied, false, actorUserId);
             }
